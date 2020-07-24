@@ -117,7 +117,7 @@
                     :inline="true"></Avatar>
                   <div style="margin-left: 20px">
                     <span>{{item.username}}</span><br/>
-                    <img src="../../../assets/examine.png" alt="" style="margin-left: -30px;">
+                    <img :src="icornArr[item.review_status]" alt="" style="margin-left: -30px;">
                     <span style="margin-left: 10px;">{{itemArr[item.review_status]}}</span>
                     <span style="float: right;margin-right: 50px;">7-10 20:00</span>
                   </div>
@@ -153,8 +153,9 @@ export default {
   name: 'approval_list',
   data () {
     return {
-      itemArr:[ '待审核', '审核中', '拒绝', '通过'],
-      icornArr:[],
+      itemArr: ['待审核', '审核中', '拒绝', '通过'],
+      icornArr: [require('../../../assets/examine.png'), require('../../../assets/adopt.png'), require('../../../assets/refuse.png')],
+      icon: require('../../../assets/examine.png'),
       active: 0,
       acticecontent: {
         apply_member_info: { username: '', photo: '' }
