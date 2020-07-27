@@ -88,7 +88,8 @@
           </div>
           <div class="footer">
             <div>
-              审批进程
+              <span style="z-index: 3"> 审批进程</span>
+
               <a-timeline style="margin-top: 25px;">
                 <a-timeline-item style="height: 100px;">
                   <Avatar
@@ -97,7 +98,7 @@
                           :src="acticecontent.apply_member_info.photo"
                           background-color="#0dd1f0"
                           color="#fff"
-                          style=" vertical-align: middle;margin: 20px auto;"
+                          style=" vertical-align: middle;"
                           :inline="true"></Avatar>
                   <div style="margin-left: 20px">
                     <span> {{acticecontent.apply_member_info.username}}</span><br/>
@@ -113,7 +114,7 @@
                     :src="item.photo"
                     background-color="#0dd1f0"
                     color="#fff"
-                    style=" vertical-align: middle;margin: 20px auto;"
+                    style=" vertical-align: middle;"
                     :inline="true"></Avatar>
                   <div style="margin-left: 20px">
                     <span>{{item.username}}</span><br/>
@@ -123,25 +124,52 @@
                   </div>
                 </a-timeline-item>
                 <a-timeline-item style="height: 100px;">
-                  <a-icon slot="dot" type="clock-circle-o" style="font-size:38px;" />
+                    <img src="../../../assets/gaizhangicon.png" alt=""  slot="dot">
                   <div style="margin-left: 20px">抄送</div>
-                  <span style="margin-left: 20px" v-for="ss in acticecontent.send_member_info" :key="ss.username"> {{ss.username}}</span>
+                  <div>
+                    <span style="margin-left: 20px" v-for="ss in acticecontent.send_member_info" :key="ss.username"> {{ss.username}}</span>
+                  </div>
                   <span style="float: right;margin-right: 50px;">7-10 20:00</span>
                 </a-timeline-item>
               </a-timeline>
             </div>
-            <div></div>
+            <div>
+              <div style="float: left">
+                <a-button type="link" @click="Cancel(acticecontent.id)">
+                 撤销
+                </a-button>
+                <!--<a-button type="link" @click="Transfer(acticecontent)">-->
+                  <!--转交-->
+                <!--</a-button>-->
+              </div>
+              <div style="float: right">
+                <a-button style="margin-right: 15px" @click="isModal(acticecontent,0)">拒绝</a-button>
+                <a-button type="primary" style="margin-right: 15px" @click="isModal(acticecontent,1)">同意</a-button>
+              </div>
+            </div>
           </div>
         </div>
       </a-layout-content>
       </a-spin>
     </a-layout>
   </a-layout>
+  <a-modal
+    :title="Title"
+    :visible="visible"
+    @ok="handleOk(acticecontent,status)"
+    @cancel="handleCancel"
+  >
+    <a-textarea
+      v-model="opinion"
+      placeholder="请填写审批意见（选填）"
+      :auto-size="{ minRows: 3, maxRows: 5 }"
+    ></a-textarea>
+  </a-modal>
 </div>
 </template>
 <script>
 import Avatar from 'vue-avatar'
-import { getapplyDetail } from '../../../../api/approval'
+import { getapplyDetail, applyCancel, applyReview } from '../../../../api/approval'
 export default {
   components: { Avatar },
   props: {
@@ -160,7 +188,11 @@ export default {
       acticecontent: {
         apply_member_info: { username: '', photo: '' }
       },
-      isShow: true
+      isShow: true,
+      visible: false,
+      Title: '',
+      opinion: '',
+      status: 0
     }
   },
   created () {
@@ -181,6 +213,39 @@ export default {
       this.getcontent(row.id)
       this.active = index
       this.isShow = true
+    },
+    async Cancel (id) { // 撤销审批
+      console.log(id)
+      const Acancel = await applyCancel({ apply_id: id })
+      if (Acancel.code === 0) {
+        console.log(Acancel)
+      }
+    },
+    // async Transfer (row) { // 转交
+    //   const sfer = await deliverOperation({ apply_id: row.id,mid:row })
+    //   if (sfer.code === 0) {
+    //     console.log(sfer)
+    //   }
+    // },
+    isModal (data, type) {
+      if (type === 1) {
+        this.Title = '确定同意' + data.username + '的' + data.holiday_type + '申请吗'
+      } else {
+        this.Title = '确定拒绝' + data.username + '的' + data.holiday_type + '申请吗'
+      }
+      this.visible = true
+      this.status = type
+    },
+    async  handleOk (data, type) {
+      const MoldData = await applyReview({ apply_id: data.id, type: data.type, review_status: type, msg: this.opinion })
+      if (MoldData.code === 0) {
+        console.log(MoldData)
+        this.$emit('update')
+      }
+      this.visible = false
+    },
+    handleCancel () {
+      this.visible = false
     }
   }
 }

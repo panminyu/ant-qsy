@@ -20,7 +20,7 @@ $http.interceptors.request.use(res => {
   console.log(res)
   // res.data.cid = 1129
   // res.headers.common['TOKEN'] = localStorage.getItem('token') || ''
-  res.headers.common['TOKEN'] = 'fXMqV4w8k/eTBpK36zZukYcGL/+ilGhrTf0pVMWLJWxiyw+3SxzUcZFby69axtte'
+  res.headers.common['TOKEN'] = 'fXMqV4w8k/eTBpK36zZukYcGL/+ilGhrTf0pVMWLJWzfCggwHh1t1yxsqK0Thw0y'
   return res
 })
 export default (opt) => new Promise((resolve) => {

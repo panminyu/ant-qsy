@@ -33,3 +33,22 @@ export const getapplyDetail = (data) => http({ // 获取发起申请审批列表
   method: 'post',
   data
 })
+
+export const applyCancel = (data) => http({ // 撤销审批
+  url: 'app/approval/applyCancel',
+  method: 'post',
+  data
+})
+
+export const deliverOperation = (data) => http({ // 转交审批
+  url: 'app/approval/deliverOperation',
+  method: 'post',
+  data
+})
+
+
+export const applyReview = (data) => http({ // 同意审批类型
+  url: 'app/approval/applyReview',
+  method: 'post',
+  data
+})

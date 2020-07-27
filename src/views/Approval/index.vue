@@ -27,7 +27,7 @@
            <SearchSelect style="display: inline-block"></SearchSelect>
             <SearchInput  style="display: inline-block;margin-left: 20px;"></SearchInput>
             <div style="margin-top: 10px;">共{{count}}条结果</div>
-            <approvalList :waitlist="applyList"  v-if="applyList.length>0"></approvalList>
+            <approvalList :waitlist="applyList"  v-if="applyList.length>0" @update="getWaitList"  ></approvalList>
             <a-empty v-show="applyList.length<=0" description="暂无数据" style="margin: 24% auto;" />
             </a-spin>
           </a-tab-pane>
