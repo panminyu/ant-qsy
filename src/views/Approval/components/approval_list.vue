@@ -9,7 +9,7 @@
             :class="{active:index === active}"
             style="padding-left: 16px;">
           <Avatar  :username="item.apply_name"
-                   background-color="#0dd1f0"
+                   :src="acticecontent.photo"
                    color="#fff"
                    style=" vertical-align: middle;margin-top: 21px;float: left"
                    :inline="true"></Avatar>
@@ -21,6 +21,7 @@
             <span v-else-if="item.type === 4">换班 </span>
             <span v-else-if="item.type === 5">补卡</span>
             {{item.start_time}}至{{item.end_time}}
+            <p>{{item.addtime}}</p>
           </div>
         </li>
       </ul>
@@ -33,7 +34,7 @@
             <div class="title_left">
               <Avatar v-if="acticecontent.apply_name"
                       :username="acticecontent.apply_name"
-                      background-color="#0dd1f0"
+                      :src="acticecontent.photo"
                       color="#fff"
                       style=" vertical-align: middle;margin: 20px auto;"
                       :inline="true"></Avatar>
@@ -43,68 +44,130 @@
               </div>
             </div>
             <div class="title_right">
-              <span class="icon_color">审批中</span>
+              <span class="icon_color_s" v-if="acticecontent.status==1">审批中</span>
+              <span class="icon_color_j" v-if="acticecontent.status==2">已拒绝</span>
+              <span class="icon_color_t" v-if="acticecontent.status==3">已通过</span>
+              <span class="icon_color_c" v-if="acticecontent.status==4">已撤销</span>
             </div>
           </div>
           <div class="conten">
             <div>
               <label>申请编号</label>
-              <p>000000000000</p>
+              <p>{{acticecontent.apply_number}}</p>
             </div>
-            <div>
+            <div v-if="acticecontent.type ==1">
               <label>请假类型</label>
               <p>
-                <span v-if="acticecontent.type ==1">请假</span>
-                <span v-if="acticecontent.type ==2">出差</span>
-                <span v-if="acticecontent.type ==3">加班</span>
-                <span v-if="acticecontent.type ==4">换班</span>
-                <span v-if="acticecontent.type ==5">补卡</span>
+                <span>{{acticecontent.holiday_type}}</span>
               </p>
             </div>
-            <div>
-              <label>开始时间</label>
-              <p>{{acticecontent.start_time}}</p>
-            </div>
-            <div>
-              <label> 结束时间 </label>
-              <p>{{acticecontent.end_time}}</p>
-            </div>
-            <div>
-              <label>请假时长</label>
-              <p>{{acticecontent.days}}</p>
-            </div>
-            <div>
-              <label>请假事由</label>
-              <p>
-                {{acticecontent.apply_msg}}
-              </p>
-            </div>
-            <div>
-              <label>图片</label>
+            <div v-if="acticecontent.type !=5">
               <div>
-                <div style="background: sandybrown;width: 80px;height: 80px;margin-top: 5px;"></div>
+                <label>开始时间</label>
+                <p>{{acticecontent.start_time}}</p>
+              </div>
+              <div>
+                <label> 结束时间 </label>
+                <p>{{acticecontent.end_time}}</p>
+              </div>
+            </div>
+            <div v-if="acticecontent.type ==1">
+              <div>
+                <label>请假时长</label>
+                <p>{{acticecontent.days}}</p>
+              </div>
+              <div>
+                <label>请假事由</label>
+                <p>
+                  {{acticecontent.apply_msg}}
+                </p>
+              </div>
+              <div>
+                <label>图片</label>
+                <div>
+                  <div style="background: sandybrown;width: 80px;height: 80px;margin-top: 5px;"></div>
+                </div>
+              </div>
+            </div>
+            <div v-if="acticecontent.type ==2">
+              <div>
+                <label> 出发城市</label>
+                <p>{{acticecontent.travel_info[0].origin}}</p>
+              </div>
+              <div>
+                <label>目的城市</label>
+                <p>{{acticecontent.travel_info[0].destination}}</p>
+              </div>
+              <div>
+                <label>出差时长</label>
+                <p>{{acticecontent.travel_info[0].days}}</p>
+              </div>
+              <div>
+                <label>出差原因</label>
+                <p>{{acticecontent.travel_info[0].apply_msg}}</p>
+              </div>
+            </div>
+            <div v-if="acticecontent.type ==3">
+              <label>加班原因</label>
+              <p>{{acticecontent.apply_msg}}</p>
+            </div>
+            <div v-if="acticecontent.type ==4">
+              <div>
+                <label>替班人</label>
+                <p>{{acticecontent.replace_username}}</p>
+              </div>
+              <div>
+                <label>换班时间</label>
+                <p>{{acticecontent.shift_date}}</p>
+              </div>
+              <div>
+                <label>还班时间</label>
+                <p>{{acticecontent.repay_shift_date}}</p>
+              </div>
+              <div>
+                <label>换班原因</label>
+                <p>{{acticecontent.apply_msg}}</p>
+              </div>
+            </div>
+            <div v-if="acticecontent.type ==5">
+              <div>
+                <label>补卡时间</label>
+                <p>{{acticecontent.check_time}}</p>
+              </div>
+              <div>
+                <label>补卡班次</label>
+                <p>{{acticecontent.bc}}</p>
+              </div>
+              <div>
+                <label>补卡原因</label>
+                <p>{{acticecontent.apply_msg}}</p>
+              </div>
+              <div>
+                <label>补卡图片</label>
+                <div>
+                  <img :src="item" alt="" v-for="(item,index) in acticecontent.apply_image" :key="index">
+                </div>
               </div>
             </div>
           </div>
           <div class="footer">
-            <div>
+            <div class="footer_liuc">
               <span style="z-index: 3"> 审批进程</span>
-
               <a-timeline style="margin-top: 25px;">
                 <a-timeline-item style="height: 100px;">
                   <Avatar
+                    v-if="acticecontent.apply_name"
                           slot="dot"
-                          :username="acticecontent.apply_member_info.username"
-                          :src="acticecontent.apply_member_info.photo"
-                          background-color="#0dd1f0"
+                          :username="acticecontent.apply_name"
+                          :src="acticecontent.photo"
                           color="#fff"
                           style=" vertical-align: middle;"
                           :inline="true"></Avatar>
-                  <div style="margin-left: 20px">
-                    <span> {{acticecontent.apply_member_info.username}}</span><br/>
+                  <div class="process_con">
+                    <span  class="size18"> {{acticecontent.apply_member_info.username}}</span><br/>
                       <img src="../../../assets/adopt.png" alt="" style="margin-left: -30px;">
                       <span style="color:#04CB12;margin-left: 10px;" >发起审批</span>
-                    <span style="float: right;margin-right: 50px;">7-10 20:00</span>
+                    <span style="float: right;margin-right: 50px;">{{acticecontent.addtime}}</span>
                   </div>
                 </a-timeline-item>
                 <a-timeline-item style="height: 100px;" v-for="item in acticecontent.review_member_info" :key="item.review_status">
@@ -112,28 +175,36 @@
                     slot="dot"
                     :username="item.username"
                     :src="item.photo"
-                    background-color="#0dd1f0"
                     color="#fff"
                     style=" vertical-align: middle;"
                     :inline="true"></Avatar>
-                  <div style="margin-left: 20px">
-                    <span>{{item.username}}</span><br/>
+                  <div class="process_con">
+                    <span class="size18">{{item.username}}</span><br/>
                     <img :src="icornArr[item.review_status]" alt="" style="margin-left: -30px;">
-                    <span style="margin-left: 10px;">{{itemArr[item.review_status]}}</span>
+                    <span style="margin-left: 10px;" :class="{'tActive':item.review_status==3, 'jActive':item.review_status==2}">{{itemArr[item.review_status]}}</span>
+                    <span style="float: right;margin-right: 50px;">{{item.review_time}}</span>
+                  </div>
+                </a-timeline-item>
+                <a-timeline-item style="height: 100px;" v-if="acticecontent.send_member_info&&acticecontent.send_member_info.length>0">
+                  <!--{{?acticecontent.send_member_info.length:'ss'}}-->
+                  <IconFont type="iconshenhe_gaizhang" slot="dot"  class="ICON_style" ></IconFont>
+                  <div  class="process_con">
+                    <div class="size18">抄送</div>
+                    <span class="chaosong" v-for="ss in acticecontent.send_member_info" :key="ss.username">
+                           <Avatar
+                             :username="ss.username"
+                             :src="ss.photo"
+                             color="#fff"
+                             :size="20"
+                             style=" vertical-align: middle;"
+                             :inline="true"></Avatar>
+                      {{ss.username}}</span>
                     <span style="float: right;margin-right: 50px;">7-10 20:00</span>
                   </div>
                 </a-timeline-item>
-                <a-timeline-item style="height: 100px;">
-                    <img src="../../../assets/gaizhangicon.png" alt=""  slot="dot">
-                  <div style="margin-left: 20px">抄送</div>
-                  <div>
-                    <span style="margin-left: 20px" v-for="ss in acticecontent.send_member_info" :key="ss.username"> {{ss.username}}</span>
-                  </div>
-                  <span style="float: right;margin-right: 50px;">7-10 20:00</span>
-                </a-timeline-item>
               </a-timeline>
             </div>
-            <div>
+            <div class="footer_btn">
               <div style="float: left">
                 <a-button type="link" @click="Cancel(acticecontent.id)">
                  撤销
@@ -143,7 +214,7 @@
                 <!--</a-button>-->
               </div>
               <div style="float: right">
-                <a-button style="margin-right: 15px" @click="isModal(acticecontent,0)">拒绝</a-button>
+                <a-button style="margin-right: 15px" class="ant-btn_Def" @click="isModal(acticecontent,0)">拒绝</a-button>
                 <a-button type="primary" style="margin-right: 15px" @click="isModal(acticecontent,1)">同意</a-button>
               </div>
             </div>
@@ -170,8 +241,10 @@
 <script>
 import Avatar from 'vue-avatar'
 import { getapplyDetail, applyCancel, applyReview } from '../../../../api/approval'
+import { IconFont } from '../../../Mixins/Icon'
+
 export default {
-  components: { Avatar },
+  components: { Avatar, IconFont },
   props: {
     waitlist: {
       type: Array,
@@ -202,7 +275,7 @@ export default {
     }, 100)
   },
   methods: {
-    async getcontent (applyid) {
+    async getcontent (applyid) { // 获取审批内容
       const activeC = await getapplyDetail({ apply_id: applyid })
       if (activeC.code === 0) {
         this.acticecontent = activeC.data
@@ -215,10 +288,9 @@ export default {
       this.isShow = true
     },
     async Cancel (id) { // 撤销审批
-      console.log(id)
       const Acancel = await applyCancel({ apply_id: id })
       if (Acancel.code === 0) {
-        console.log(Acancel)
+        this.$emit('update')
       }
     },
     // async Transfer (row) { // 转交
@@ -239,7 +311,6 @@ export default {
     async  handleOk (data, type) {
       const MoldData = await applyReview({ apply_id: data.id, type: data.type, review_status: type, msg: this.opinion })
       if (MoldData.code === 0) {
-        console.log(MoldData)
         this.$emit('update')
       }
       this.visible = false
@@ -255,27 +326,13 @@ export default {
   .active{
     background: rgb(236,237,255);
   }
+
 .siderconten{
   background: #fff;
   text-align: left;
   height: 650px;
   overflow: auto;
-  border: 1px solid #ccc;
-}
-.siderconten::-webkit-scrollbar{
-  width: 1px;
-}
-.siderconten::-webkit-scrollbar-thumb {
-  /*滚动条里面小方块*/
-  border-radius: 10px;
-  box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
-  background   : #bcbcbc;
-}
-.siderconten::-webkit-scrollbar-track {
-  /*滚动条里面轨道*/
-  box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
-  border-radius: 16px;
-  background   : #ededed;
+  border: 1px solid #DDDFE2;
 }
 .Trial_list{
   list-style: none;
@@ -283,7 +340,7 @@ export default {
 }
 .Trial_list > li{
   border-bottom: 1px solid #ccc;
-  height: 100px;
+  height: 110px;
   cursor: pointer;
 }
 /*.Trial_list > li:hover{*/
@@ -294,10 +351,16 @@ export default {
   }
   .conten_approval{
     background: #fff;
+    /*position: relative;*/
   }
   .header-title{
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #DDDFE2;
     overflow: hidden;
+    position: absolute;
+    top: 1px;
+    width: 100%;
+    background: #fff;
+    right: 1px;
   }
   .header-title h3{
     font-weight: bold;
@@ -311,27 +374,79 @@ export default {
     line-height: 90px;
     margin-right: 10px;
   }
-  .icon_color{
-    background: #fff0d7;
-    color: #F6A905;
+  .icon_color_s, .icon_color_t, .icon_color_j, .icon_color_c{
     padding: 2px 6px;
     border-radius: 5px;
   }
+  .icon_color_s{
+    background: #fff0d7;
+    color: #F6A905;
+  }
+  .icon_color_t{
+    background:rgb(215,245,217);
+    color: #04CB12;
+  }
+  .icon_color_j{
+    background: rgb(255,224,224);
+    color: #FF2A2A;
+  }
+  .icon_color_c{
+    background: #fff0d7;
+    color: #F6A905;
+  }
+  .jActive{color:#FF2A2A }
+  .tActive {color:#04CB12}
   .conten{
-    margin-top: 15px;
+    margin-top: 100px;
     padding: 0 30px;
   }
   .conten label{
     /*font-size: 14px;*/
     color: #AAAAAA;
   }
-  .conten p{
+  p,span,div{
     color: #333333;
   }
   .footer{
     margin-top: 20px;
     border-top: 1px solid #ccc;
     padding-top: 19px;
+  }
+  .footer_liuc{
     padding-left: 30px;
+  }
+  .footer_btn{
+    overflow: hidden;
+    position: absolute;
+    bottom: 1px;
+    right: 1px;
+    background: #fff;
+    width: 100%;
+    height: 56px;
+    line-height: 56px;
+    border-top: 1px solid #DDDFE2;
+  }
+  .ICON_style{
+    font-size: 24px;
+    background:#2A5AFF;
+    color: #fff;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    line-height: 55px
+
+  }
+  .chaosong{
+    background: #ececec;
+    border-radius: 15px;
+   padding: 5px;
+  }
+  .size18{
+    font-size: 18px;
+  }
+  .process_con{
+    margin-left: 20px;
+    position: relative;
+    top: -10px;
   }
 </style>

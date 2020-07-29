@@ -1,7 +1,7 @@
 <template>
  <div class="install">
    <ul class="apply_list">
-     <li v-for="item in applist" >
+     <li v-for="item in applist" :key="item.id">
       <router-link :to="item.app_keyword"  class="apply_conter" style="display: block;" v-if="item.app_type === 0">
         <img alt="example" class="apply_icon" :src="item.app_icorn" />
          {{item.app_name}}
@@ -11,10 +11,10 @@
          {{item.app_name}}
        </a>
      </li>
-     <li v-if="isadd">
-       <a-icon type="plus-circle" :style="{fontSize:'35px',verticalAlign:'middle'}"></a-icon>
-       <span style="margin-left: 10px;">添加功能</span>
-       </li>
+     <!--<li v-if="isadd">-->
+       <!--<a-icon type="plus-circle" :style="{fontSize:'35px',verticalAlign:'middle'}"></a-icon>-->
+       <!--<span style="margin-left: 10px;">添加功能</span>-->
+       <!--</li>-->
   </ul>
  </div>
 </template>

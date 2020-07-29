@@ -110,12 +110,26 @@ export default {
     line-height: 90px;
     margin-right: 10px;
   }
-  .icon_color{
-    background: #fff0d7;
-    color: #F6A905;
+  .icon_color_s, .icon_color_t, .icon_color_j, .icon_color_c{
     padding: 2px 6px;
     border-radius: 5px;
   }
+.icon_color_s{
+  background: #fff0d7;
+  color: #F6A905;
+}
+icon_color_t{
+  background: #fff0d7;
+  color: #F6A905;
+}
+icon_color_j{
+  background: #fff0d7;
+  color: #F6A905;
+}
+icon_color_c{
+  background: #fff0d7;
+  color: #F6A905;
+}
   .conten{
     margin-top: 15px;
     padding: 0 30px;

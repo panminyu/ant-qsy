@@ -21,12 +21,12 @@
         </div>
       </div>
       <div class="aooroval_conten">
-        <a-tabs @change="tabsapproval">
-          <a-tab-pane key="1" tab="待审批 （2）">
+        <a-tabs @change="tabsapproval" :animated="false">
+          <a-tab-pane key="1" :tab="waitcount>0?'待审批（'+waitcount+'）':'待审批'">
             <a-spin tip="Loading..." :spinning="spinning">
            <SearchSelect style="display: inline-block"></SearchSelect>
             <SearchInput  style="display: inline-block;margin-left: 20px;"></SearchInput>
-            <div style="margin-top: 10px;">共{{count}}条结果</div>
+            <div style="margin-top: 10px;">共{{waitcount}}条结果</div>
             <approvalList :waitlist="applyList"  v-if="applyList.length>0" @update="getWaitList"  ></approvalList>
             <a-empty v-show="applyList.length<=0" description="暂无数据" style="margin: 24% auto;" />
             </a-spin>
@@ -65,7 +65,7 @@
               <a-icon slot="prefix" type="search" />
             </a-input>
             <h2 style="font-weight: bold;margin-top: 30px;">申请</h2>
-            <a-empty v-show="!applyList" description="暂无数据" style="margin: 25% auto;" />
+            <a-empty v-show="applyList" description="暂无数据" style="margin: 15% auto;" />
             <applylList></applylList>
             </a-spin>
           </a-tab-pane>
@@ -94,7 +94,8 @@ export default {
   data () {
     return {
       userName: '',
-      count: 2,
+      waitcount: 0,
+      count: 0,
       applyList: [],
       spinning: true
     }
@@ -107,7 +108,7 @@ export default {
       const waitlist = await applyWaitList()
       if (waitlist.code === 0) {
         this.applyList = waitlist.data
-        this.count = waitlist.count
+        this.waitcount = waitlist.data.length
         this.spinning = false
       }
     },
@@ -115,29 +116,33 @@ export default {
       const passlist = await applyPassList()
       if (passlist.code === 0) {
         this.applyList = passlist.data
+        this.count = passlist.data.length
         this.spinning = false
       }
     },
     async getApplyList (page) { // 获取发起审批列表
-      const list = await applyList(page)
+      const list = await applyList({ page: page })
       if (list.code === 0) {
         this.applyList = list.data
+        this.count = list.data.length
         this.spinning = false
       }
     },
     async getCopyToMyList (page) { // 获取抄送列表
-      const copyList = await copyToMyList(page)
+      const copyList = await copyToMyList({ page: page })
       if (copyList.code === 0) {
         this.applyList = copyList.data
+        this.count = copyList.data.length
         this.spinning = false
       } else {}
     },
-    async getapplyType () { // 发起申请列表
-      const applyTypelist = await applyType()
+    async getapplyType (page) { // 发起申请列表
+      const applyTypelist = await applyType({ page: page })
       console.log(applyTypelist)
       this.spinning = false
     },
     tabsapproval: function (val) {
+      if (val != 1) { this.waitcount = 0 }
       this.spinning = true
       switch (val) {
         case '1':
@@ -154,7 +159,7 @@ export default {
           this.getCopyToMyList(1)
           break
         case '5':
-          this.getCopyToMyList(1)
+          this.getapplyType(1)
           break
       }
     }
@@ -163,7 +168,13 @@ export default {
 </script>
 
 <style scoped>
-  .backcolor{background: #fff;}
+  .backcolor{
+    background: #fff;
+    min-width: 700px;
+    position: absolute;
+    height: 100%;
+    width: calc(100% - 74px);
+  }
   .apply_header_right{
     /*line-height: 80px;*/
     float: right;
@@ -196,5 +207,7 @@ export default {
     max-width: 1190px;
     margin:54px  auto auto;
     text-align: left;
+    min-width: 700px;
+    padding-left: 38px;
   }
 </style>

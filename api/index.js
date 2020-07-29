@@ -24,7 +24,6 @@ $http.interceptors.request.use(res => {
   return res
 })
 export default (opt) => new Promise((resolve) => {
-  console.log(opt)
   const baseHeaders = {
     TOKEN: 'fXMqV4w8k/eTBpK36zZukYcGL/+ilGhrTf0pVMWLJWxiyw+3SxzUcZFby69axtte'
   }

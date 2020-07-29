@@ -44,5 +44,5 @@ export default {
   .a-layout-sider{min-height: 1200px;height: 200px;}
   .test{list-style: none;}
   .sider{width: 74px;}
-  .content{min-width: 700px;}
+  .content{min-width: 850px;overflow: auto;}
 </style>
