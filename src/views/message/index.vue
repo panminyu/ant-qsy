@@ -48,7 +48,7 @@
 import NotificationList from '../../components/Notification_list/NotificationList'
 import ChatWindow from '../../components/ChatWindow/Chat'
 import { IconFont } from '../../Mixins/Icon'
-
+import { mapState } from 'vuex'
 const data = [
   {
     title: '审批'
@@ -72,10 +72,23 @@ export default {
       active: 0,
       isflod: false,
       ismsg: false,
-      notification: data
+      notification: data,
+      websock: null
     }
   },
   created () {
+  },
+  computed: {
+    ...mapState({
+      toDaysList (state) {
+        return state.navList
+      }
+    })
+  },
+  watch: {
+    toDaysList () {
+      console.log(244444)
+    }
   },
   methods: {
     activeInfos (data, index) {

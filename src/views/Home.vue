@@ -23,7 +23,7 @@
 // @ is an alias to /src
 import Amenu from '../components/Menu/Amenu'
 import Avatar from 'vue-avatar'
-import { asyncRoutes } from '../router'
+import { asyncRoutes } from '../router/router'
 export default {
   components: { Amenu, Avatar },
   name: 'home',

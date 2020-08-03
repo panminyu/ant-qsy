@@ -3,7 +3,46 @@
     <router-view/>
   </div>
 </template>
-
+<script>
+export default {
+  created () {
+    this.initwebsoket()
+  },
+  methods: {
+    initwebsoket () {
+      const wsUrl = 'ws://192.168.1.101:8282'
+      this.websock = new WebSocket(wsUrl)
+      this.websock.onopen = this.websocketOpen
+      this.websock.onmessage = this.websocketMsg
+      this.websock.onclose = this.websocketClose
+      this.websock.onerror = this.websocketError
+    },
+    // 连接成功
+    websocketOpen () {
+      console.log('已连接')
+    },
+    // 接收消息
+    websocketMsg (e) {
+      console.log(e.data)
+      console.log('收到消息啦')
+      if (e.data.type === 'int') {
+        this.websocketsend()
+      }
+    },
+    websocketsend (Data) { // 数据发送
+      this.websock.send(Data)
+    },
+    // 关闭
+    websocketClose () {
+      console.log('关闭连接')
+    },
+    // 失败
+    websocketError () {
+      console.log('连接失败')
+    }
+  }
+}
+</script>
 <style lang="less">
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
