@@ -14,7 +14,7 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    getNewList ({ commit }, List) {
+    getNewList: ({ commit }, List) => {
       commit('updateTodayList', List)
     }
   }

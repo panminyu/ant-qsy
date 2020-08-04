@@ -4,13 +4,15 @@
   </div>
 </template>
 <script>
+import store from './vuex/store'
+import { getBind } from '../api/msg'
 export default {
   created () {
     this.initwebsoket()
   },
   methods: {
     initwebsoket () {
-      const wsUrl = 'ws://192.168.1.101:8282'
+      const wsUrl = 'ws://qsy.officelinking.com:8282'
       this.websock = new WebSocket(wsUrl)
       this.websock.onopen = this.websocketOpen
       this.websock.onmessage = this.websocketMsg
@@ -19,18 +21,19 @@ export default {
     },
     // 连接成功
     websocketOpen () {
-      console.log('已连接')
+      // console.log('已连接')
     },
     // 接收消息
     websocketMsg (e) {
-      console.log(e.data)
+      // console.log(e.data)
       console.log('收到消息啦')
-      if (e.data.type === 'int') {
-        this.websocketsend()
+      const obdata = JSON.parse(e.data)
+      if (obdata.type === 'init') {
+        getBind({ client_id: obdata.client_id })
+      } else {
+        console.log('添加数据')
+        store.dispatch('getNewList', e.data)
       }
-    },
-    websocketsend (Data) { // 数据发送
-      this.websock.send(Data)
     },
     // 关闭
     websocketClose () {

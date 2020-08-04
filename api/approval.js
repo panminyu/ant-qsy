@@ -28,7 +28,7 @@ export const applyType = () => http({ // 获取发起申请审批列表
   method: 'post'
 })
 
-export const getapplyDetail = (data) => http({ // 获取发起申请审批列表
+export const getapplyDetail = (data) => http({ // 获取审批详情
   url: 'app/approval/applyDetail',
   method: 'post',
   data
@@ -45,7 +45,6 @@ export const deliverOperation = (data) => http({ // 转交审批
   method: 'post',
   data
 })
-
 
 export const applyReview = (data) => http({ // 同意审批类型
   url: 'app/approval/applyReview',

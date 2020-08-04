@@ -14,21 +14,28 @@
             <h4>今天</h4>
             <IconFont type="iconzhedie1" :class="[isflod ? 'open':'fold']" @click="openFold(0)"></IconFont>
           </div>
-          <NotificationList v-on:tabInfo="activeInfos" :info="notification" :active="active" :class="{'ceshi':isflod}"></NotificationList>
+          <NotificationList v-on:tabInfo="Details" :info="toDadys" :active="active" :class="{'ceshi':isflod}"></NotificationList>
         </div>
         <div>
           <div  class="time_handle" style="margin-top: 24px;">
             <h4>更早</h4>
             <IconFont type="iconzhedie1" :class="[ismsg ? 'open':'fold']" @click="openFold(1)" ></IconFont>
           </div>
-          <NotificationList v-on:tabInfo="activeInfos" :info="notification" :active="active" :class="{'ceshi':ismsg}"></NotificationList>
+          <NotificationList v-on:tabInfo="Details" :info="earlierList" :active="active" :class="{'ceshi':ismsg}"></NotificationList>
         </div>
       </div>
 
     </a-layout-sider>
     <a-layout>
       <a-layout-content class="content" width="1366" style="background: #fff;text-align: left;">
-        <ChatWindow :info="activeInfo" :active="active"></ChatWindow>
+        <div class="header" v-if="activeInfo">
+          <img :src="active_title.app_icon" alt=" " width="48" height="48" style="border-radius: 50%">
+          <h2 style="display:inline-block;margin-left: 16px;">{{active_title.app_name}}</h2>
+        </div>
+        <div v-if="activeInfo">
+          <ChatWindow :info="item" :active="active" v-for="(item,index) in activeInfo" :key="index" v-on:isShow="DetailPage"></ChatWindow>
+        </div>
+        <DetailsMsg :detailVisible="isDetail" :detailsMsg="minuteMsg" v-on:onClose="DetailPage"></DetailsMsg>
          <a-empty v-show="!activeInfo"  description="暂无数据" style="margin: 25% auto;" />
       </a-layout-content>
       <a-layout-sider width="56" style="background: #F1F1F1;text-align: center;padding-top: 15px">
@@ -46,9 +53,11 @@
 
 <script>
 import NotificationList from '../../components/Notification_list/NotificationList'
+import DetailsMsg from '../../components/ChatWindow/detailsInfo'
 import ChatWindow from '../../components/ChatWindow/Chat'
 import { IconFont } from '../../Mixins/Icon'
-import { mapState } from 'vuex'
+import { getSideList, getDetails } from '../../../api/msg'
+// import { mapState } from 'vuex'
 const data = [
   {
     title: '审批'
@@ -65,35 +74,75 @@ const data = [
 ]
 export default {
   name: 'index',
-  components: { NotificationList, ChatWindow, IconFont },
+  components: { NotificationList, ChatWindow, IconFont, DetailsMsg },
   data () {
     return {
-      activeInfo: '',
-      active: 0,
+      activeInfo: null,
+      active_title: null,
+      active: null,
       isflod: false,
       ismsg: false,
       notification: data,
+      minuteMsg: null,
+      isDetail: false,
+      toDadys: [],
+      earlierList: [],
       websock: null
     }
   },
   created () {
+    this.getMsgList()
   },
   computed: {
-    ...mapState({
-      toDaysList (state) {
-        return state.navList
-      }
-    })
+    f1 () {
+      return this.$store.state.todaysList
+    }
   },
   watch: {
-    toDaysList () {
-      console.log(244444)
+    f1 (newval, oldval) {
+      console.log(newval)
+      // console.log(oldval)
+      for (let i = 0; i < newval.length; i++) {
+        for (let j = 0; j < this.toDadys.length; j++) {
+          if (newval[i].app_id === this.toDadys[j].app_id) {
+            this.toDadys.splice(j, 1)
+            continue
+          }
+        }
+      }
+      // for (let a = 0; a < newval.length; a++) {
+      //   this.toDadys.unshift(newval[a])
+      // }
+      for (let m = 0; m < newval.length; m++) {
+        for (let k = 0; k < this.earlierList.length; k++) {
+          if (newval[m].app_id === this.earlierList[k].app_id) {
+            this.toDadys.splice(k, 1)
+            continue
+          }
+        }
+      }
+      this.toDadys.unshift(JSON.parse(newval))
     }
   },
   methods: {
-    activeInfos (data, index) {
-      this.activeInfo = data
-      this.active = index
+    async getMsgList () {
+      const msgList = await getSideList()
+      if (msgList.code === 0) {
+        this.toDadys = msgList.data.today
+        this.earlierList = msgList.data.old
+      }
+    },
+    async Details (data, index) {
+      const details = await getDetails({ app_id: data.app_id, msg_type: data.msg_type })
+      console.log(details)
+      if (details.code === 0) {
+        this.active_title = details.app_info
+        this.activeInfo = details.data
+        this.active = index
+        this.$message.success('成功获取数据')
+      } else {
+        this.$message.error('获取数据失败')
+      }
     },
     openFold (type) {
       if (type === 0) {
@@ -101,6 +150,9 @@ export default {
       } else {
         this.ismsg = !this.ismsg
       }
+    },
+    DetailPage () {
+      this.isDetail = !this.isDetail
     }
   }
 }
@@ -137,4 +189,10 @@ export default {
     display: none;
   }
   .message_input{width: 384px;height: 40px;}
+  .header{
+    height:80px;
+    border-bottom: 1px solid #e6e6e6;
+    line-height: 80px;
+    padding-left: 24px;
+  }
 </style>
