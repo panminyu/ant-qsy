@@ -14,29 +14,52 @@
             <h4>今天</h4>
             <IconFont type="iconzhedie1" :class="[isflod ? 'open':'fold']" @click="openFold(0)"></IconFont>
           </div>
-          <NotificationList v-on:tabInfo="Details" :info="toDadys" :active="active" :class="{'ceshi':isflod}"></NotificationList>
+          <NotificationList
+            @tabInfo="DetailsInfoList"
+            :info="toDadys"
+            :active="active"
+            :class="{'ceshi':isflod}"></NotificationList>
         </div>
         <div>
           <div  class="time_handle" style="margin-top: 24px;">
             <h4>更早</h4>
             <IconFont type="iconzhedie1" :class="[ismsg ? 'open':'fold']" @click="openFold(1)" ></IconFont>
           </div>
-          <NotificationList v-on:tabInfo="Details" :info="earlierList" :active="active" :class="{'ceshi':ismsg}"></NotificationList>
+          <NotificationList
+            @tabInfo="DetailsInfoList"
+            :info="earlierList"
+            :active="active"
+            :class="{'ceshi':ismsg}"></NotificationList>
         </div>
       </div>
 
     </a-layout-sider>
     <a-layout>
-      <a-layout-content class="content" width="1366" style="background: #fff;text-align: left;">
-        <div class="header" v-if="activeInfo">
-          <img :src="active_title.app_icon" alt=" " width="48" height="48" style="border-radius: 50%">
-          <h2 style="display:inline-block;margin-left: 16px;">{{active_title.app_name}}</h2>
+      <a-layout-content class="right_content siderconten" width="1366">
+        <div  style="min-width: 500px">
+          <div class="header" v-if="activeInfo">
+            <img :src="active_title.app_icon" alt=" " width="48" height="48" style="border-radius: 50%">
+            <h2 style="display:inline-block;margin-left: 16px;">{{active_title.app_name}}</h2>
+          </div>
+          <div v-if="activeInfo">
+            <ChatWindow
+              :info="item"
+              :active="active"
+              v-for="(item,index) in activeInfo"
+              :key="index"
+              @isShow="DetailPage"
+              @Submit="Submit"
+            ></ChatWindow>
+          </div>
+          <DetailsMsg
+            :detailVisible="isDetail"
+            :detailsMsg="minuteMsg"
+            :AIndex="active"
+            @onClose="onClose"
+            @Submit="Submit"
+            v-if="minuteMsg"></DetailsMsg>
+          <a-empty v-show="!activeInfo"  description="暂无数据" style="margin: 25% auto;" />
         </div>
-        <div v-if="activeInfo">
-          <ChatWindow :info="item" :active="active" v-for="(item,index) in activeInfo" :key="index" v-on:isShow="DetailPage"></ChatWindow>
-        </div>
-        <DetailsMsg :detailVisible="isDetail" :detailsMsg="minuteMsg" v-on:onClose="DetailPage"></DetailsMsg>
-         <a-empty v-show="!activeInfo"  description="暂无数据" style="margin: 25% auto;" />
       </a-layout-content>
       <a-layout-sider width="56" style="background: #F1F1F1;text-align: center;padding-top: 15px">
         <div class="right_menu_icon">
@@ -57,6 +80,7 @@ import DetailsMsg from '../../components/ChatWindow/detailsInfo'
 import ChatWindow from '../../components/ChatWindow/Chat'
 import { IconFont } from '../../Mixins/Icon'
 import { getSideList, getDetails } from '../../../api/msg'
+import { getapplyDetail, applyReview } from '../../../api/approval'
 // import { mapState } from 'vuex'
 const data = [
   {
@@ -98,43 +122,39 @@ export default {
       return this.$store.state.todaysList
     }
   },
-  watch: {
+  watch: { // 监听消息列表状态
     f1 (newval, oldval) {
-      console.log(newval)
-      // console.log(oldval)
-      for (let i = 0; i < newval.length; i++) {
-        for (let j = 0; j < this.toDadys.length; j++) {
-          if (newval[i].app_id === this.toDadys[j].app_id) {
-            this.toDadys.splice(j, 1)
-            continue
-          }
+      console.log('最新消息', newval)
+      for (let j = 0; j < this.toDadys.length; j++) {
+        if (newval.app_id === this.toDadys[j].app_id) {
+          this.toDadys.splice(j, 1)
+          continue
         }
       }
       // for (let a = 0; a < newval.length; a++) {
       //   this.toDadys.unshift(newval[a])
       // }
-      for (let m = 0; m < newval.length; m++) {
-        for (let k = 0; k < this.earlierList.length; k++) {
-          if (newval[m].app_id === this.earlierList[k].app_id) {
-            this.toDadys.splice(k, 1)
-            continue
-          }
+      for (let k = 0; k < this.earlierList.length; k++) {
+        if (newval.app_id === this.earlierList[k].app_id) {
+          this.toDadys.splice(k, 1)
+          continue
         }
       }
-      this.toDadys.unshift(JSON.parse(newval))
+
+      this.toDadys.unshift(newval)
     }
   },
   methods: {
-    async getMsgList () {
+    async getMsgList () { // 获取消息列表
       const msgList = await getSideList()
       if (msgList.code === 0) {
         this.toDadys = msgList.data.today
         this.earlierList = msgList.data.old
       }
     },
-    async Details (data, index) {
+    async DetailsInfoList (data, index) { // 获取消息详细信息列表
+      console.log('sss', data)
       const details = await getDetails({ app_id: data.app_id, msg_type: data.msg_type })
-      console.log(details)
       if (details.code === 0) {
         this.active_title = details.app_info
         this.activeInfo = details.data
@@ -144,14 +164,40 @@ export default {
         this.$message.error('获取数据失败')
       }
     },
-    openFold (type) {
+    openFold (type) { // 左侧消息列表的展开收起
       if (type === 0) {
         this.isflod = !this.isflod
       } else {
         this.ismsg = !this.ismsg
       }
     },
-    DetailPage () {
+    async DetailPage (data) { // 获取审批详情
+      console.log(data)
+      if (this.isDetail === false) {
+        const applyDetail = await getapplyDetail({ apply_id: data.apply_id })
+        console.log(applyDetail)
+        if (applyDetail.code === 0) {
+          this.minuteMsg = applyDetail.data
+          this.isDetail = true
+        } else {
+          this.$message.error('获取信息失败')
+        }
+      }
+    },
+    async Submit (type, data, index, subtype) { // 审批  同意 拒绝
+      console.log(data)
+      if (subtype === 0) {
+        this.isDetail = false
+      }
+      const resultSP = await applyReview({ apply_id: data.apply_id, review_status: type })
+      if (resultSP.code === 0) {
+        this.$message.success(resultSP.msg)
+        this.DetailsInfoList(data, index) // 调用消息详情列表刷新
+      } else {
+        this.$message.error(resultSP.msg)
+      }
+    },
+    onClose () { // 关闭抽屉弹窗
       this.isDetail = !this.isDetail
     }
   }
@@ -159,6 +205,7 @@ export default {
 </script>
 
 <style scoped>
+
   .msg_sider{
     background: #fff;
     text-align: left;
@@ -169,6 +216,10 @@ export default {
   .title_list li{height: 20px;background: #fff;border-bottom: 1px steelblue solid;width: 100%;}
   .main{height: 100%;position: absolute;bottom: 0;top: 0;width: calc(100% - 75px); }
   .a-layout-sider {flex: 1 1;}
+  .right_content{
+    background: #fff;
+    text-align: left;
+  }
   .icon{
     font-size: 40px;
     color: #9A9A9A;

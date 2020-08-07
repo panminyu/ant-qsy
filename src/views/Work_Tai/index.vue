@@ -1,6 +1,8 @@
 <template>
  <div>
-  <div style="background: #fff;height: 80px;border-bottom: 1px solid #ddd;padding: 20px;">
+  <div style="background: #fff;height: 80px;border-bottom: 1px solid #ddd;padding: 20px;    width: 100%;
+    overflow: hidden;
+    min-width: 730px;">
     <div class="apply_header_left">
       <a-input style="width: 300px;" v-model="userName" placeholder="搜索"  suffix="（Ctrl+K)">
         <a-icon slot="prefix" type="search" />

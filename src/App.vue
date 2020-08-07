@@ -7,6 +7,11 @@
 import store from './vuex/store'
 import { getBind } from '../api/msg'
 export default {
+  data () {
+    return {
+      titme: null
+    }
+  },
   created () {
     this.initwebsoket()
   },
@@ -22,17 +27,26 @@ export default {
     // 连接成功
     websocketOpen () {
       // console.log('已连接')
+      this.strat()
+    },
+    strat () {
+      // this.titme = setTimeout(() => {
+      //   this.initwebsoket()
+      //   this.websock.send('ping')
+      // }, 33000)
     },
     // 接收消息
     websocketMsg (e) {
       // console.log(e.data)
-      console.log('收到消息啦')
+      console.log('收到消息啦=========>')
       const obdata = JSON.parse(e.data)
       if (obdata.type === 'init') {
         getBind({ client_id: obdata.client_id })
       } else {
-        console.log('添加数据')
-        store.dispatch('getNewList', e.data)
+        console.log('添加数据=======>')
+        console.log(obdata)
+        console.log(obdata.data)
+        store.dispatch('getNewList', obdata.data)
       }
     },
     // 关闭
@@ -43,17 +57,23 @@ export default {
     websocketError () {
       console.log('连接失败')
     }
+  },
+  destroyed () {
+    this.websock.onerror()
+    clearInterval(this.titme)
   }
 }
 </script>
 <style lang="less">
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+   font-family:Microsoft YaHei;;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #333;
+  min-width: 1130px;
 }
+.ant-anchor-ink{display: none}
 /*span,p{ color: #333;}*/
 #nav {
   padding: 30px;

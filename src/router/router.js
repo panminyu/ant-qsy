@@ -32,6 +32,11 @@ const router = new Router({
       component: Home,
       redirect: '/message',
       children: asyncRoutes
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('../views/Login/Login.vue')
     }
   ]
 })
