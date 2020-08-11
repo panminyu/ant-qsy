@@ -19,7 +19,7 @@ export default {
   name: 'VerificationCode',
   data () {
     return {
-      ct: ['', '', '',  '', '', ''],
+      ct: ['', '', '', '', '', ''],
       loading: false,
       msg: ''
     }
@@ -45,7 +45,7 @@ export default {
       if (val) {
         console.log('this.ctSize', this.ctSize)
         this.$refs.input[this.ctSize - 1].blur()
-        this.sendCaptcha()
+        this.$emit('onlastCode', this.ct)
       }
     }
   },
@@ -56,7 +56,7 @@ export default {
     onInput (val, index) {
       this.msg = ''
       val = val.replace(/\s/g, '')
-      if (index == this.ctSize - 1) {
+      if (index === this.ctSize - 1) {
         this.ct[this.ctSize - 1] = val[0] // 最后一个码，只允许输入一个字符。
       } else if (val.length > 1) {
         let i = index
@@ -85,20 +85,6 @@ export default {
         }
       }
     },
-    sendCaptcha () {
-      console.log()
-      this.msg = `发送验证码到服务器：${this.ct.join('')}`
-      // 此时无法操作 input。。
-      this.loading = true
-      setTimeout(() => {
-        this.msg = ('验证码错误')
-        this.loading = false
-        this.$nextTick(() => {
-          this.reset()
-        })
-      }, 3000)
-    },
-
     reset () {
     // 重置。一般是验证码错误时触发。
       this.ct = this.ct.map(item => '')
@@ -120,4 +106,5 @@ export default {
   font-size: 22px;
   text-align: center;
 }
+  .ant-input:hover{border-color: #d9d9d9}
 </style>

@@ -85,7 +85,7 @@ export default {
     }
   }
 }
-.ant-btn{color: #2A5AFF!important;}
+.ant-btn-defult{color: #2A5AFF!important;}
 .ant-btn_Def{border: 1px solid #2A5AFF!important;}
 .ant-btn-link{color: #2A5AFF}
 .ant-btn-primary{color: #fff!important;

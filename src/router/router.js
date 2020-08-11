@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '../views/Home.vue'
+import stote from '../vuex/store'
 Vue.use(Router)
 export const asyncRoutes = [
   {
@@ -41,6 +42,22 @@ const router = new Router({
   ]
 })
 router.beforeEach((to, from, next) => {
+  console.log(to.path)
+  let info = stote.state.userInfo // 获取存放的用户信息
+  let isinfo = Object.keys(info).length === 0 // 判断用户信息的长度是否为0
+  console.log(isinfo)
+  if (isinfo && to.path !== '/login') {
+    const companys = JSON.parse(localStorage.getItem('Users'))
+    if (companys !== undefined) {
+      stote.dispatch('getUserInfo', companys)
+      next()
+    } else {
+      next({ path: 'login' })
+    }
+  } else {
+    console.log(2)
+    next()
+  }
   next()
 })
 export default router

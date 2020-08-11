@@ -25,42 +25,52 @@
             <p>文本一些我呢不能点击打开即可欢迎光临企事云双卡手机款式钉钉钉钉</p>
           </div>
           <div class="login_info">
-            <div>
-              <a-input placeholder="Basic usage"  size="large">
-                <a-select default-value="lucy" style="width: 80px;" slot="prefix"  >
+            <a-form-model :model="Loginmobile"  ref="ruleForm" :rules="rules">
+              <a-form-model-item prop="mobile">
+              <a-input placeholder="请输入手机号"  size="large" v-model="Loginmobile.mobile" :maxLength="11">
+                <a-select default-value="+86" style="width: 80px;" slot="prefix"  >
                   <a-icon slot="suffixIcon" type="caret-up" />
                   <a-select-option value="jack">
-                    Jack
+                    +86
                   </a-select-option>
                 </a-select>
               </a-input>
-            </div>
-            <div>
-              <a-button type="primary" style="width: 100%;margin-top: 16px;" size="large" @click="next">下一步</a-button>
-            </div>
-            <div style="margin-top: 24px;color: #AAA;">
-              <a-checkbox :checked="false"></a-checkbox>
+              </a-form-model-item>
+              <a-form-model-item>
+                <a-button  style="width: 100%;margin-top: 16px;" @click="isnext =!isnext" size="large">下一步</a-button>
+                <!--<a-button  :disabled="!isDisable" v-show="!isDisable" style="width: 100%;margin-top: 16px;" size="large">下一步</a-button>-->
+                <a-button type="primary" style="width: 100%;margin-top: 16px;" size="large" @click="next"  v-show="isDisable">下一步</a-button>
+              </a-form-model-item>
+            </a-form-model>
+            <a-form-model-item style="margin-top: 24px;color: #AAA;">
+              <a-checkbox v-model="checked" @change="isNext"></a-checkbox>
               我已阅读同意
               <a href="#">企事云协议</a>
               和
               <a href="#">隐私策略</a>
-            </div>
+            </a-form-model-item>
           </div>
           <div class="footer">
             <a-button style="width: 100%;border-radius: 25px;position: relative;top: 218px;"  size="large" :disabled="isDisable">加入团队</a-button>
           </div>
         </div>
-        <div v-show="!isnext">
+        <div v-if="!isnext" class="next_login">
           <div class="login_Code login_title">
             <div class="icon_back">
               <a-icon type="left" style="font-size: 16px;"></a-icon>
-              <span style="font-size: 16px;color: #777">返回</span>
+              <span style="font-size: 16px;color: #777" @click="isnext = true">返回</span>
             </div>
             <h1>验证手机号码</h1>
             <p>文本一些我呢不能点击打开即可欢迎光临企事云双卡手机款式钉钉钉钉</p>
           </div>
-          <VerificationCode></VerificationCode>
-          <a-button @click="isnext =!isnext ">登陆</a-button>
+          <VerificationCode @onlastCode ="Login"  ref="mychild"></VerificationCode>
+          <a-button type="link" @click="nextClick" style="font-size: 18px;padding-left: 0;padding-top: 16px;">重新获取验证码</a-button>
+          <a-button
+            :type="isLogin ?'primary':''"
+            class="login_btn"
+            @click="Login"
+            :disabled="!isLogin"
+            :loading="isLogin">登陆</a-button>
         </div>
       </a-layout-sider>
     </a-layout>
@@ -70,18 +80,90 @@
 
 <script>
 import VerificationCode from '../../components/Verification/VerificationCode'
+import { getVerify, loginByVerify, getUserInfo } from '../../../api/login'
+import stote from '../../vuex/store'
 export default {
   name: 'Login',
   components: { VerificationCode },
   data () {
     return {
-      isDisable: true,
-      isnext: true
+      isDisable: false,
+      isnext: true,
+      isLogin: false,
+      Loginmobile: { mobile: '', checked_protocol: 1 },
+      checked: true,
+      rules: {
+        mobile: [
+          { required: true, message: '请输入手机号', trigger: 'change' },
+          { max: 11, min: 11, message: '请输入正确的手机格式', trigger: 'blur', pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/ }
+        ]
+      }
+    }
+  },
+  watch: { // 监听手机号输入长度
+    'Loginmobile.mobile' (newval, oldval) {
+      if (newval.length === 11) {
+        this.isDisable = true
+      } else {
+        this.isDisable = false
+      }
     }
   },
   methods: {
-    next () {
-      this.isnext = false
+    next () { // 验证手机号码 获取验证码
+      this.$refs.ruleForm.validate(valid => {
+        if (valid) {
+          this.nextClick()
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    async nextClick () { // 获取验证码
+      const Verify = await getVerify(this.Loginmobile)
+      console.log(Verify)
+      if (Verify.code === 0) {
+        this.isnext = false
+        this.$message.success('验证码已发送')
+      } else {
+        this.$message.error(Verify.msg)
+      }
+    },
+    isNext (e) {
+      if (e.target.checked) {
+        this.Loginmobile.checked_protocol = 1
+      } else {
+        this.Loginmobile.checked_protocol = 0
+      }
+    },
+    async Login (data) { // 验证码登陆
+      let code = data.join('') //  获取输入的验证码
+      this.isLogin = true
+      const login = await loginByVerify({ mobile: this.Loginmobile.mobile, verify: code })
+      if (login.code === 0) {
+        this.$message.success('登陆成功')
+        console.log(login.token)
+        stote.dispatch('getToken', login.token) // 存入状态管理
+        localStorage.setItem('Token', login.token)// 存入本地
+        this.getuserInfo()
+      } else {
+        this.isLogin = false
+        this.$refs.mychild.reset()
+        this.$message.error(login.msg)
+      }
+    },
+    async getuserInfo () { // 获取用户信息
+      console.log(stote.state)
+      const userInfo = await getUserInfo({ token: stote.state.Token })
+      if (userInfo.code === 0) {
+        console.log(userInfo.data.companys)
+        stote.dispatch('getUserInfo', userInfo.data)
+        stote.dispatch('getcurrentUser', userInfo.data.companys[0])
+        localStorage.setItem('Users', JSON.stringify(userInfo.data))
+        localStorage.setItem('currentUser', JSON.stringify(userInfo.data.companys[0]))
+        this.$router.push('/')
+      }
     }
   }
 }
@@ -184,4 +266,12 @@ export default {
     padding-right: 2px;
   }
   .icon_back:hover {background: #DDDFE2;border-radius: 2px;}
+
+  .login_btn{
+    width: 100%;
+    position: relative;
+    top: 291px;
+    height: 48px;
+    font-size: 18px;
+  }
 </style>

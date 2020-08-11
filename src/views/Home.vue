@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="container">
     <a-layout class="main">
     <a-layout-sider  :style="{ width: '74px', maxWidth: '74px',minWidth:'74px'}" class="sider" :defaultCollapsed="true">
-      <Avatar  username="敏渝"
-               src=""
+      <Avatar  :username="User.username"
+               :src="User.avator"
                background-color="#0dd1f0"
                color="#fff"
                style=" vertical-align: middle;margin: 20px auto;border: 3px solid #fff;"
@@ -24,6 +24,7 @@
 import Amenu from '../components/Menu/Amenu'
 import Avatar from 'vue-avatar'
 import { asyncRoutes } from '../router/router'
+import { mapState } from 'vuex'
 export default {
   components: { Amenu, Avatar },
   name: 'home',
@@ -31,6 +32,11 @@ export default {
     return {
       meuns: []
     }
+  },
+  computed: {
+    ...mapState({
+      User (state) { return state.userInfo }
+    })
   },
   created () {
     this.meuns = asyncRoutes

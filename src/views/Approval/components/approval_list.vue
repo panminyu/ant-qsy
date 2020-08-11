@@ -9,7 +9,7 @@
             :class="{active:index === active}"
             style="padding-left: 16px;">
           <Avatar  :username="item.apply_name"
-                   :src="acticecontent.photo"
+                   :src="item.photo"
                    color="#fff"
                    style=" vertical-align: middle;margin-top: 21px;float: left"
                    :inline="true"></Avatar>
@@ -22,6 +22,12 @@
             <span v-else-if="item.type === 5">补卡</span>
             {{item.start_time}}至{{item.end_time}}
             <p>{{item.addtime}}</p>
+          </div>
+          <div class="title_right">
+            <span class="icon_color_s" v-if="item.status==1">审批中</span>
+            <span class="icon_color_j" v-if="item.status==2">已拒绝</span>
+            <span class="icon_color_t" v-if="item.status==3">已通过</span>
+            <span class="icon_color_c" v-if="item.status==4">已撤销</span>
           </div>
         </li>
       </ul>
