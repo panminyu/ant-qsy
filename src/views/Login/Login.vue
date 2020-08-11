@@ -154,11 +154,11 @@ export default {
       }
     },
     async getuserInfo () { // 获取用户信息
-      console.log(stote.state)
+      // console.log(stote.state)
       const userInfo = await getUserInfo({ token: stote.state.Token })
       if (userInfo.code === 0) {
-        console.log(userInfo.data.companys)
-        stote.dispatch('getUserInfo', userInfo.data)
+        // console.log(userInfo.data.companys)
+        // stote.dispatch('getUserInfo', userInfo.data)
         stote.dispatch('getcurrentUser', userInfo.data.companys[0])
         localStorage.setItem('Users', JSON.stringify(userInfo.data))
         localStorage.setItem('currentUser', JSON.stringify(userInfo.data.companys[0]))

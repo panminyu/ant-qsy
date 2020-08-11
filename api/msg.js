@@ -11,7 +11,7 @@ export const getSideList = () => http({ // 获取消息列表
   method: 'post'
 })
 export const getDetails = (data) => http({ // 获取消息列表
-  url: 'index.php/app/msg/appList',
+  url: 'app/msg/appList',
   method: 'post',
   data
 })
