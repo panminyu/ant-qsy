@@ -17,6 +17,7 @@
 <script>
 export default {
   name: 'VerificationCode',
+  props: ['isShow'],
   data () {
     return {
       ct: ['', '', '', '', '', ''],
@@ -46,6 +47,11 @@ export default {
         console.log('this.ctSize', this.ctSize)
         this.$refs.input[this.ctSize - 1].blur()
         this.$emit('onlastCode', this.ct)
+      }
+    },
+    'isShow' (newval, oldval) {
+      if (!newval) {
+        this.resetCaret()
       }
     }
   },

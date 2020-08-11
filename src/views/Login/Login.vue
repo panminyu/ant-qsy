@@ -37,8 +37,8 @@
               </a-input>
               </a-form-model-item>
               <a-form-model-item>
-                <a-button  style="width: 100%;margin-top: 16px;" @click="isnext =!isnext" size="large">下一步</a-button>
-                <!--<a-button  :disabled="!isDisable" v-show="!isDisable" style="width: 100%;margin-top: 16px;" size="large">下一步</a-button>-->
+                <!--<a-button  style="width: 100%;margin-top: 16px;" @click="isnext =!isnext" size="large">下一步</a-button>-->
+                <a-button  :disabled="!isDisable" v-show="!isDisable" style="width: 100%;margin-top: 16px;" size="large">下一步</a-button>
                 <a-button type="primary" style="width: 100%;margin-top: 16px;" size="large" @click="next"  v-show="isDisable">下一步</a-button>
               </a-form-model-item>
             </a-form-model>
@@ -54,7 +54,7 @@
             <a-button style="width: 100%;border-radius: 25px;position: relative;top: 218px;"  size="large" :disabled="isDisable">加入团队</a-button>
           </div>
         </div>
-        <div v-if="!isnext" class="next_login">
+        <div v-show="!isnext" class="next_login">
           <div class="login_Code login_title">
             <div class="icon_back">
               <a-icon type="left" style="font-size: 16px;"></a-icon>
@@ -63,7 +63,7 @@
             <h1>验证手机号码</h1>
             <p>文本一些我呢不能点击打开即可欢迎光临企事云双卡手机款式钉钉钉钉</p>
           </div>
-          <VerificationCode @onlastCode ="Login"  ref="mychild"></VerificationCode>
+          <VerificationCode @onlastCode ="Login" :isShow="isnext" ref="mychild"></VerificationCode>
           <a-button type="link" @click="nextClick" style="font-size: 18px;padding-left: 0;padding-top: 16px;">重新获取验证码</a-button>
           <a-button
             :type="isLogin ?'primary':''"
@@ -162,7 +162,10 @@ export default {
         stote.dispatch('getcurrentUser', userInfo.data.companys[0])
         localStorage.setItem('Users', JSON.stringify(userInfo.data))
         localStorage.setItem('currentUser', JSON.stringify(userInfo.data.companys[0]))
+        localStorage.setItem('cid', userInfo.data.companys[0].id)
         this.$router.push('/')
+      } else {
+        this.$message.error(userInfo.msg)
       }
     }
   }

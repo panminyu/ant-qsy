@@ -6,11 +6,11 @@ const $http = Axios.create({
   headers: { 'Content-Type': 'application/json' },
   transformRequest: [ data => {
     if (data === undefined) {
-      data = { cid: 1129 } // localStorage.getItem('cid') }
+      data = { cid: localStorage.getItem('cid') || '' } // localStorage.getItem('cid') }
       // console.log(2)
       // data.cid = 1126
     } else {
-      data.cid = 1129 // localStorage.getItem('cid')
+      data.cid = localStorage.getItem('cid') || ''// localStorage.getItem('cid')
     }
     return JSON.stringify(data)
   }]
@@ -19,7 +19,7 @@ const $http = Axios.create({
 $http.interceptors.request.use(res => {
   // res.data.cid = 1129
   // res.headers.common['TOKEN'] = localStorage.getItem('token') || ''
-  res.headers.common['TOKEN'] = 'eG4dI2085SQbPVJnxrySGIcGL/+ilGhrTf0pVMWLJWwuVMJvKn6zeGSvKBn07h+2'
+  res.headers.common['TOKEN'] = localStorage.getItem('Token') || ''
   return res
 })
 export default (opt) => new Promise((resolve) => {
