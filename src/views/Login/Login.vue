@@ -82,6 +82,8 @@
 import VerificationCode from '../../components/Verification/VerificationCode'
 import { getVerify, loginByVerify, getUserInfo } from '../../../api/login'
 import stote from '../../vuex/store'
+import { setToken, setPower } from "../../util/auth";
+
 export default {
   name: 'Login',
   components: { VerificationCode },
@@ -143,9 +145,9 @@ export default {
       const login = await loginByVerify({ mobile: this.Loginmobile.mobile, verify: code })
       if (login.code === 0) {
         this.$message.success('登陆成功')
-        console.log(login.token)
-        stote.dispatch('getToken', login.token) // 存入状态管理
-        localStorage.setItem('Token', login.token)// 存入本地
+        // console.log(login.token)
+        // stote.dispatch('getToken', login.token) // 存入状态管理
+        setToken(login.token)
         this.getuserInfo()
       } else {
         this.isLogin = false
@@ -154,15 +156,13 @@ export default {
       }
     },
     async getuserInfo () { // 获取用户信息
-      // console.log(stote.state)
       const userInfo = await getUserInfo({ token: stote.state.Token })
       if (userInfo.code === 0) {
-        // console.log(userInfo.data.companys)
-        // stote.dispatch('getUserInfo', userInfo.data)
+        stote.dispatch('getUserInfo', userInfo.data)
         stote.dispatch('getcurrentUser', userInfo.data.companys[0])
-        localStorage.setItem('Users', JSON.stringify(userInfo.data))
-        localStorage.setItem('currentUser', JSON.stringify(userInfo.data.companys[0]))
-        localStorage.setItem('cid', userInfo.data.companys[0].id)
+        setPower(JSON.stringify(userInfo.data),
+          JSON.stringify(userInfo.data.companys[0]),
+          userInfo.data.companys[0].id)
         this.$router.push('/')
       } else {
         this.$message.error(userInfo.msg)

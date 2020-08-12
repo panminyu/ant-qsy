@@ -1,16 +1,16 @@
 import Axios from 'axios'
-
+import { getCid, getToken } from "../src/util/auth"
 
 const $http = Axios.create({
   baseURL: '/api',
   headers: { 'Content-Type': 'application/json' },
   transformRequest: [ data => {
     if (data === undefined) {
-      data = { cid: localStorage.getItem('cid') || '' } // localStorage.getItem('cid') }
+      data = { cid: getCid() || '' } // localStorage.getItem('cid') }
       // console.log(2)
       // data.cid = 1126
     } else {
-      data.cid = localStorage.getItem('cid') || ''// localStorage.getItem('cid')
+      data.cid = getCid() || ''// localStorage.getItem('cid')
     }
     return JSON.stringify(data)
   }]
@@ -19,7 +19,7 @@ const $http = Axios.create({
 $http.interceptors.request.use(res => {
   // res.data.cid = 1129
   // res.headers.common['TOKEN'] = localStorage.getItem('token') || ''
-  res.headers.common['TOKEN'] = localStorage.getItem('Token') || ''
+  res.headers.common['TOKEN'] = getToken() || ''
   return res
 })
 export default (opt) => new Promise((resolve) => {
@@ -32,7 +32,7 @@ export default (opt) => new Promise((resolve) => {
       res.data
     )
   }).catch(res => {
-    // console.log('运程请求失败')
-    this.$message.error('运程请求失败')
+    console.log('运程请求失败')
+    // this.$message.error('运程请求失败')
   })
 })

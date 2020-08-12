@@ -9,10 +9,11 @@ export default {
     return {
       titme: null
     }
+  },
+  created () {
+    // 在页面加载时读取localStorage里的状态信息
+
   }
-  // created () {
-  //   this.initwebsoket()
-  // },
   // methods: {
   //   initwebsoket () {
   //     const wsUrl = 'ws://qsy.officelinking.com:8282'

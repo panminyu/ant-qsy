@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { getUsers, getCurrentUser } from '../util/auth'
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -7,8 +9,8 @@ export default new Vuex.Store({
     routers: [],
     Token: '',
     cid: null,
-    userInfo: {},
-    currInfo: {},
+    userInfo: JSON.parse(getUsers()),
+    currInfo: JSON.parse(getCurrentUser()),
     todaysList: []
   },
   mutations: {
