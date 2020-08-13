@@ -24,7 +24,7 @@
         <a-tabs @change="tabsapproval" :animated="false">
           <a-tab-pane key="1" :tab="waitcount>0?'待审批（'+waitcount+'）':'待审批'">
             <a-spin tip="Loading..." :spinning="spinning">
-           <SearchSelect style="display: inline-block"></SearchSelect>
+           <SearchSelect style="display: inline-block" :Type="choose_type" @selectType="getWaitList"></SearchSelect>
             <SearchInput  style="display: inline-block;margin-left: 20px;"></SearchInput>
             <div style="margin-top: 10px;">共{{waitcount}}条结果</div>
             <approvalList :waitlist="applyList"  v-if="applyList.length>0" @update="getWaitList"  ></approvalList>
@@ -33,7 +33,7 @@
           </a-tab-pane>
           <a-tab-pane key="2" tab="已审批">
             <a-spin tip="Loading..." :spinning="spinning">
-            <SearchSelect style="display: inline-block"></SearchSelect>
+            <SearchSelect style="display: inline-block" :Type="choose_type" @selectType="getPassList"></SearchSelect>
             <SearchInput  style="display: inline-block;margin-left: 20px;"></SearchInput>
             <div style="margin-top: 10px;">共{{count}}条结果</div>
             <approvalList :waitlist="applyList" v-if="applyList.length>0"></approvalList>
@@ -42,7 +42,7 @@
           </a-tab-pane>
           <a-tab-pane key="3" tab="我发起">
             <a-spin tip="Loading..." :spinning="spinning">
-            <SearchSelect style="display: inline-block"></SearchSelect>
+            <SearchSelect style="display: inline-block" :Type="choose_type" @selectType="getApplyList"></SearchSelect>
             <SearchInput  style="display: inline-block;margin-left: 20px;"></SearchInput>
             <div style="margin-top: 10px;">共{{count}}条结果</div>
             <approvalList :waitlist="applyList"  v-if="applyList.length>0"></approvalList>
@@ -51,7 +51,7 @@
           </a-tab-pane>
           <a-tab-pane key="4" tab="抄送我">
             <a-spin tip="Loading..." :spinning="spinning">
-            <SearchSelect style="display: inline-block"></SearchSelect>
+              <SearchSelect style="display: inline-block" :Type="choose_type" @selectType="getCopyToMyList"></SearchSelect>
             <SearchSelect style="display: inline-block;margin-left: 20px;"></SearchSelect>
             <SearchInput  style="display: inline-block;margin-left: 20px;"></SearchInput>
             <div style="margin-top: 10px;">共{{count}}条结果</div>
@@ -97,71 +97,75 @@ export default {
       waitcount: 0,
       count: 0,
       applyList: [],
-      spinning: true
+      spinning: true,
+      choose_type: 1,
+      page: 1
     }
   },
   created () {
-    this.getWaitList()
+    this.getWaitList(this.choose_type)
   },
   methods: {
-    async getWaitList () { // 获取待审批列表
-      const waitlist = await applyWaitList()
+    async getWaitList (type) { // 获取待审批列表
+      const waitlist = await applyWaitList({ choose_type: type })
       if (waitlist.code === 0) {
         this.applyList = waitlist.data
         this.waitcount = waitlist.data.length
         this.spinning = false
       }
     },
-    async getPassList () { // 获取已审批列表
-      const passlist = await applyPassList()
+    async getPassList (type) { // 获取已审批列表
+      const passlist = await applyPassList({ page: this.page, choose_type: type })
       if (passlist.code === 0) {
         this.applyList = passlist.data
         this.count = passlist.data.length
         this.spinning = false
       }
     },
-    async getApplyList (page) { // 获取发起审批列表
-      const list = await applyList({ page: page })
+    async getApplyList (type) { // 获取发起审批列表
+      const list = await applyList({ page: this.page, choose_type: type })
       if (list.code === 0) {
         this.applyList = list.data
         this.count = list.data.length
         this.spinning = false
       }
     },
-    async getCopyToMyList (page) { // 获取抄送列表
-      const copyList = await copyToMyList({ page: page })
+    async getCopyToMyList (type) { // 获取抄送列表
+      const copyList = await copyToMyList({ page: this.page, choose_type: type })
       if (copyList.code === 0) {
         this.applyList = copyList.data
         this.count = copyList.data.length
         this.spinning = false
       } else {}
     },
-    async getapplyType (page) { // 发起申请列表
-      const applyTypelist = await applyType({ page: page })
+    async getapplyType (type) { // 发起申请列表
+      const applyTypelist = await applyType({ page: this.page, choose_type: type })
       console.log(applyTypelist)
       this.spinning = false
     },
     tabsapproval: function (val) {
-      if (val != 1) { this.waitcount = 0 }
+      if (val !== 1) { this.waitcount = 0 }
       this.spinning = true
       switch (val) {
         case '1':
-          console.log(val)
-          this.getWaitList()
+          this.getWaitList(this.choose_type)
           break
         case '2':
-          this.getPassList()
+          this.getPassList(this.choose_type)
           break
         case '3':
-          this.getApplyList(1)
+          this.getApplyList(this.choose_type)
           break
         case '4':
-          this.getCopyToMyList(1)
+          this.getCopyToMyList(this.choose_type)
           break
         case '5':
-          this.getapplyType(1)
+          this.getapplyType(this.choose_type)
           break
       }
+    },
+    check (val) {
+      this.choose_type = val
     }
   }
 }

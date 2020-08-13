@@ -98,6 +98,6 @@ export default {
   .main{display: flex;height: 100%;position: absolute;top: 0;left: 0;width: 100%}
   .a-layout-sider{min-height: 1200px;height: 200px;}
   .test{list-style: none;}
-  .sider{width: 74px;}
+  .sider{width: 74px;background: #2959FF}
   /*.content{min-width: 1130px;overflow: hidden;}*/
 </style>

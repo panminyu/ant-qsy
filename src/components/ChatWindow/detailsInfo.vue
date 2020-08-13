@@ -151,6 +151,8 @@
               </div>
             </div>
           </div>
+          <img src="../../assets/Refuse_state.png" alt=""  v-if="detailsMsg.status==2" class="state_img">
+          <img src="../../assets/adopt_state.png" alt="" v-if="detailsMsg.status==3" class="state_img">
         </div>
         <div id="type2">
           <div class="footer">
@@ -308,6 +310,7 @@ export default {
   }
 #type1,#type2{
   background: #fff;
+  position: relative;
 }
 .anchorFiexd{
   position: fixed;
@@ -319,7 +322,7 @@ export default {
   box-shadow: 5px 2px 6px 1px #d7d7d7;
 }
   #content{
-    padding: 16px 24px;
+    padding: 16px 23px;
   }
   .icon_color_s, .icon_color_t, .icon_color_j, .icon_color_c{
     padding: 2px 6px;
@@ -357,7 +360,7 @@ export default {
   }
   .conten p{
     float: left;
-    margin-left: 17px;
+    margin-left: 16px;
     margin-bottom: 10px;
     font-size: 18px
   }
@@ -416,4 +419,10 @@ export default {
   }
   .size18{font-size: 18px;}
   .ant-timeline-item-last{height: 50px!important;}
+  .state_img{
+    position: absolute;
+    top: 24px;
+    right: 0;
+    z-index: 0;
+  }
 </style>

@@ -210,8 +210,8 @@
                 </a-timeline-item>
               </a-timeline>
             </div>
-            <div class="footer_btn">
-              <div style="float: left">
+            <div class="footer_btn" v-if="acticecontent.is_cancel!=0 && acticecontent.is_apply !=0">
+              <div style="float: left" v-if="acticecontent.is_cancel==1">
                 <a-button type="link" @click="Cancel(acticecontent.id)">
                  撤销
                 </a-button>
@@ -219,7 +219,7 @@
                   <!--转交-->
                 <!--</a-button>-->
               </div>
-              <div style="float: right">
+              <div style="float: right" v-if="acticecontent.is_apply==1">
                 <a-button style="margin-right: 15px" class="ant-btn_Def" @click="isModal(acticecontent,0)">拒绝</a-button>
                 <a-button type="primary" style="margin-right: 15px" @click="isModal(acticecontent,1)">同意</a-button>
               </div>

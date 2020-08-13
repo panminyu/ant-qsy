@@ -1,19 +1,19 @@
 <template>
 <section>
-  <a-select default-value="all" style="width: 120px">
-    <a-select-option value="all">
+  <a-select :default-value="Type" style="width: 120px" @change="checkType">
+    <a-select-option :value="0">
       全部申请
     </a-select-option>
-    <a-select-option value="qingjia">
+    <a-select-option :value="1">
       请假
     </a-select-option>
-    <a-select-option value="jiaban">
+    <a-select-option :value="2">
       加班
     </a-select-option>
-    <a-select-option value="waichu">
+    <a-select-option :value="3">
       外出
     </a-select-option>
-    <a-select-option value="chuchai">
+    <a-select-option :value="4">
       出差
     </a-select-option>
   </a-select>
@@ -22,7 +22,14 @@
 
 <script>
 export default {
-  name: 'Search_bar'
+  name: 'Search_bar',
+  props: ['Type'],
+  methods: {
+    checkType (val) {
+      console.log(val)
+      this.$emit('selectType', val)
+    }
+  }
 }
 </script>
 

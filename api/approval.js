@@ -1,8 +1,9 @@
 import http from './index'
 
-export const applyWaitList = () => http({ // 获取待审批列表
+export const applyWaitList = (data) => http({ // 获取待审批列表
   url: 'app/approval/applyWaitList',
-  method: 'post'
+  method: 'post',
+  data
 })
 
 export const applyPassList = (data) => http({ // 获取已审批列表
