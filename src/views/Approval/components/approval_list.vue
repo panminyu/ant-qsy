@@ -14,14 +14,14 @@
                    style=" vertical-align: middle;margin-top: 21px;float: left"
                    :inline="true"></Avatar>
           <div style="float: left;padding-top: 20px;padding-left: 16px">
-            <h3 style="font-weight: bold;">{{item.apply_name}}</h3>
-            <span v-if="item.type === 1">请假 </span>
-            <span v-else-if="item.type === 2">出差 </span>
-            <span v-else-if="item.type === 3">加班 </span>
-            <span v-else-if="item.type === 4">换班 </span>
-            <span v-else-if="item.type === 5">补卡</span>
-            {{item.start_time}}至{{item.end_time}}
-            <p>{{item.addtime}}</p>
+            <h3 style="font-weight: bold;font-size: 18px">{{item.apply_name}}</h3>
+            <span v-if="item.type === 1" style="font-size: 14px">请假 </span>
+            <span v-else-if="item.type === 2" style="font-size: 14px">出差 </span>
+            <span v-else-if="item.type === 3" style="font-size: 14px">加班 </span>
+            <span v-else-if="item.type === 4" style="font-size: 14px">换班 </span>
+            <span v-else-if="item.type === 5" style="font-size: 14px">补卡</span>
+            <span>{{item.start_time}}至{{item.end_time}}</span>
+            <p style="margin: 0;font-size: 14px">{{item.addtime}}</p>
           </div>
           <div class="title_right">
             <span class="icon_color_s" v-if="item.status==1">审批中</span>
@@ -61,13 +61,14 @@
               <label>申请编号</label>
               <p>{{acticecontent.apply_number}}</p>
             </div>
+            <!--请假-->
             <div v-if="acticecontent.type ==1">
               <label>请假类型</label>
               <p>
                 <span>{{acticecontent.holiday_type}}</span>
               </p>
             </div>
-            <div v-if="acticecontent.type !=5">
+            <div v-if="acticecontent.type !=5&&acticecontent.type!=4">
               <div>
                 <label>开始时间</label>
                 <p>{{acticecontent.start_time}}</p>
@@ -80,7 +81,7 @@
             <div v-if="acticecontent.type ==1">
               <div>
                 <label>请假时长</label>
-                <p>{{acticecontent.days}}</p>
+                <p>{{acticecontent.apply_length}}{{acticecontent.unit==1?'小时':'天'}}</p>
               </div>
               <div>
                 <label>请假事由</label>
@@ -90,9 +91,9 @@
               </div>
               <div>
                 <label>图片</label>
-                <div>
-                  <div style="background: sandybrown;width: 80px;height: 80px;margin-top: 5px;"></div>
-                </div>
+                  <div>
+                    <img :src="item" alt="" width="80" height="80" style="margin-right: 10px" v-for="(item,index) in acticecontent.apply_image" :key="'qj'+index">
+                  </div>
               </div>
             </div>
             <div v-if="acticecontent.type ==2">
@@ -106,7 +107,7 @@
               </div>
               <div>
                 <label>出差时长</label>
-                <p>{{acticecontent.travel_info[0].days}}</p>
+                <p>{{acticecontent.travel_info[0].days}}{{acticecontent.unit==1?'小时':'天'}}</p>
               </div>
               <div>
                 <label>出差原因</label>
@@ -151,7 +152,7 @@
               <div>
                 <label>补卡图片</label>
                 <div>
-                  <img :src="item" alt="" v-for="(item,index) in acticecontent.apply_image" :key="index">
+                  <img :src="item" alt="" width="80" height="80" style="margin-right: 10px" v-for="(item,index) in acticecontent.apply_image" :key="'22'+index">
                 </div>
               </div>
             </div>
@@ -176,7 +177,7 @@
                     <span style="float: right;margin-right: 50px;">{{acticecontent.addtime}}</span>
                   </div>
                 </a-timeline-item>
-                <a-timeline-item style="height: 100px;" v-for="item in acticecontent.review_member_info" :key="item.review_status">
+                <a-timeline-item style="height: 100px;" v-for="(item, index) in acticecontent.review_member_info" :key="index">
                   <Avatar
                     slot="dot"
                     :username="item.username"
@@ -188,8 +189,8 @@
                     <span class="size18">{{item.username}}</span><br/>
                     <img :src="icornArr[item.review_status-1]" alt="" style="margin-left: -30px;">
                     <span style="margin-left: 10px;"
-                          :class="{'tActive':item.review_status==3,
-                           'jActive':item.review_status==2,
+                          :class="{'tActive':item.review_status==4,
+                           'jActive':item.review_status==3,
                            'dActive':item.review_status==1||item.review_status==2}">
                       {{itemArr[item.review_status-1]}}
                     </span>
@@ -201,7 +202,7 @@
                   <IconFont type="iconshenhe_gaizhang" slot="dot"  class="ICON_style" ></IconFont>
                   <div  class="process_con">
                     <div class="size18">抄送</div>
-                    <span class="chaosong" v-for="ss in acticecontent.send_member_info" :key="ss.username">
+                    <span class="chaosong" v-for="(ss,index) in acticecontent.send_member_info" :key="'ss'+index">
                            <Avatar
                              :username="ss.username"
                              :src="ss.photo"
@@ -210,14 +211,14 @@
                              style=" vertical-align: middle;"
                              :inline="true"></Avatar>
                       {{ss.username}}</span>
-                    <span style="float: right;margin-right: 50px;">{{ss.send_time}}</span>
+                    <span style="float: right;margin-right: 50px;">{{acticecontent.send_member_info[0].send_time}}</span>
                   </div>
                 </a-timeline-item>
               </a-timeline>
             </div>
             <div class="footer_btn" v-if="acticecontent.is_cancel!=1 ||acticecontent.is_apply !=1">
               <div style="float: left" v-if="acticecontent.is_cancel==1">
-                <a-button type="link" @click="Cancel(acticecontent.id)">
+                <a-button type="link" @click="Cancel(acticecontent.apply_id)">
                  撤销
                 </a-button>
                 <!--<a-button type="link" @click="Transfer(acticecontent)">-->
@@ -265,8 +266,8 @@ export default {
   name: 'approval_list',
   data () {
     return {
-      itemArr: ['待审核', '审核中', '已同意', '已拒绝'],
-      icornArr: [require('../../../assets/examine.png'), require('../../../assets/examine.png'), require('../../../assets/adopt.png'), require('../../../assets/refuse.png')],
+      itemArr: ['待审核', '审核中', '已拒绝', '已同意'],
+      icornArr: [require('../../../assets/examine.png'), require('../../../assets/examine.png'), require('../../../assets/refuse.png'), require('../../../assets/adopt.png')],
       icon: require('../../../assets/examine.png'),
       active: 0,
       acticecontent: {
@@ -282,7 +283,6 @@ export default {
   created () {
     setTimeout(() => {
       this.getcontent(this.waitlist[0].id)
-      console.log(this.waitlist[0].id)
     }, 100)
   },
   methods: {
@@ -301,9 +301,10 @@ export default {
       this.isShow = true
     },
     async Cancel (id) { // 撤销审批
+      console.log(id)
       const Acancel = await applyCancel({ apply_id: id })
       if (Acancel.code === 0) {
-        this.$emit('update')
+        this.$emit('update', 0)
       } else {
         this.$message.error(Acancel.msg)
       }
@@ -324,7 +325,8 @@ export default {
       this.status = type
     },
     async  handleOk (data, type) {
-      const MoldData = await applyReview({ apply_id: data.id, type: data.type, review_status: type, msg: this.opinion })
+      console.log(data)
+      const MoldData = await applyReview({ apply_id: data.apply_id, type: data.type, review_status: type, msg: this.opinion })
       if (MoldData.code === 0) {
         this.$emit('update')
       } else {

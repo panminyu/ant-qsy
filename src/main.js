@@ -5,6 +5,7 @@ import 'ant-design-vue/dist/antd.css'
 import router from './router/router'
 import store from './vuex/store.js'
 import './registerServiceWorker'
+import 'babel-polyfill'
 Vue.config.productionTip = false
 Vue.use(Antd)
 new Vue({

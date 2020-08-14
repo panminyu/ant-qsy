@@ -43,14 +43,19 @@ export default {
     list-style: none;
     width: 100%;
     max-width: 1772px;
-    display: grid;
-    gap: 16px 16px;
+    display: grid!important;
+    /*gap: 16px 16px;*/
     grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
-    grid-template-rows: repeat(auto-fill,80px);cursor: pointer
+    grid-template-rows: repeat(auto-fill,80px);cursor: pointer;
+    display: inline-flex;
   }
   .apply_list li{
     background: #fff;
     border-radius: 5px;
+    margin:auto 16px;
+  }
+  .apply_list li:first-child{
+    margin-left: 0!important;
   }
 .apply_list li:hover{
   box-shadow:0 10px 16px -2px #ddd;

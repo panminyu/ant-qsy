@@ -25,8 +25,12 @@
                      :inline="true">
             </Avatar>
             <div class="title_name">
-              <h2 style="margin-bottom: 0;">加班</h2>
-              <h3>张三</h3>
+              <h2 style="margin-bottom: 0;" v-if="detailsMsg.type==1">{{detailsMsg.holiday_type}}</h2>
+              <h2 style="margin-bottom: 0;" v-if="detailsMsg.type==2">出差</h2>
+              <h2 style="margin-bottom: 0;" v-if="detailsMsg.type==3">加班</h2>
+              <h2 style="margin-bottom: 0;" v-if="detailsMsg.type==4">换班</h2>
+              <h2 style="margin-bottom: 0;" v-if="detailsMsg.type==5">补卡</h2>
+              <h3>{{detailsMsg.username}}</h3>
             </div>
             <span class="icon_color_s state" v-if="detailsMsg.status==1">审批中</span>
             <span class="icon_color_j state" v-if="detailsMsg.status==2">已拒绝</span>
@@ -79,14 +83,14 @@
               </div>
               <div class="xqType" v-if="detailsMsg.apply_msg">
                 <label>请假事由</label>
-                <p>
+                <p style="width: 267px;">
                   {{detailsMsg.apply_msg}}
                 </p>
               </div>
               <div class="xqType" v-if="detailsMsg.apply_image.length>0">
                 <label>图片</label>
                 <p>
-                  <img :src="item" alt="" v-for="(item,index) in detailsMsg.apply_image" :key="index">
+                  <img :src="item" alt="" width="50" height="50" style="margin-right: 10px;" v-for="(item,index) in detailsMsg.apply_image" :key="index">
                 </p>
               </div>
             </div>
@@ -146,7 +150,7 @@
               <div class="xqType">
                 <label>补卡图片</label>
                 <div>
-                  <img :src="item" alt="" v-for="(item,index) in detailsMsg.apply_image" :key="index">
+                  <img :src="item" alt="" style="width: 50px;height: 50px;margin-right: 10px;" v-for="(item,index) in detailsMsg.apply_image" :key="index">
                 </div>
               </div>
             </div>
@@ -174,7 +178,7 @@
                   <span  class="size16">{{detailsMsg.addtime}}</span>
                 </div>
               </a-timeline-item>
-              <a-timeline-item style="height: 100px;" v-for="item in detailsMsg.review_member_info" :key="item.review_status">
+              <a-timeline-item style="height: 100px;" v-for="(item,index) in detailsMsg.review_member_info" :key="index">
                 <Avatar
                   slot="dot"
                   :username="item.username"
@@ -184,19 +188,19 @@
                   :inline="true"></Avatar>
                 <div class="process_con">
                 <span class="size18">{{item.username}}</span><br/>
-                <img :src="icornArr[item.review_status]" alt="" style="margin-left: -30px;">
+                <img :src="icornArr[item.review_status-1]" alt="" style="margin-left: -30px;">
                 <span
                   style="margin-left: 10px;"
-                  :class="{'tActive':item.review_status==3,
-                  'jActive':item.review_status==2}">
-                  {{itemArr[item.review_status]}}
+                  :class="{'tActive':item.review_status==4,
+                  'jActive':item.review_status==3,
+                   'dActive':item.review_status==1||item.review_status==2}">
+                  {{itemArr[item.review_status-1]}}
                 </span>
                 <span  class="size16">{{item.review_time}}</span>
                 </div>
               </a-timeline-item>
               <a-timeline-item style="height: 20px;" v-if="detailsMsg.send_member_info&&detailsMsg.send_member_info.length>0">
-                <!--{{?detailsMsg.send_member_info.length:'ss'}}-->
-                <IconFont type="iconshenhe_gaizhang" slot="dot"  class="ICON_style" ></IconFont>
+                <IconFont type="iconshenhe_gaizhang" slot="dot" class="ICON_style" ></IconFont>
                 <div  class="process_con">
                   <div class="size18">抄送</div>
                   <span class="chaosong" v-for="ss in detailsMsg.send_member_info" :key="ss.username">
@@ -208,12 +212,11 @@
                              style=" vertical-align: middle;"
                              :inline="true"></Avatar>
                       {{ss.username}}</span>
-                  <span  class="size16">7-10 20:00</span>
+                  <span  class="size16">{{detailsMsg.send_member_info[0].send_time}}</span>
                 </div>
               </a-timeline-item>
             </a-timeline>
           </div>
-
         </div>
         </div>
       </div>
@@ -231,13 +234,13 @@ import Avatar from 'vue-avatar'
 export default {
   name: 'detailsInfo',
   components: { Avatar },
-  props: ['detailsMsg', 'detailVisible','AIndex'],
+  props: ['detailsMsg', 'detailVisible', 'AIndex'],
   data () {
     return {
       visible: false,
       isAnchor: false,
       itemArr: ['待审核', '审核中', '拒绝', '通过'],
-      icornArr: [require('../../assets/examine.png'), require('../../assets/adopt.png'), require('../../assets/refuse.png')],
+      icornArr: [require('../../assets/examine.png'), require('../../assets/examine.png'), require('../../assets/refuse.png'), require('../../assets/adopt.png')],
       icon: require('../../assets/examine.png')
     }
   },
@@ -346,6 +349,7 @@ export default {
   }
   .jActive{color:#FF2A2A }
   .tActive {color:#04CB12}
+  .dActive{color:#F6A905;}
   .conten{
     padding: 32px 24px;
   }
@@ -357,6 +361,8 @@ export default {
     color: #AAAAAA;
     float: left;
     font-size: 18px;
+    width: 72px;
+    text-align: right;
   }
   .conten p{
     float: left;
@@ -396,7 +402,6 @@ export default {
     width: 48px;
     height: 48px;
     line-height: 55px
-
   }
   .chaosong{
     background: #ececec;

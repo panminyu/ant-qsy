@@ -28,7 +28,7 @@
             <SearchInput  style="display: inline-block;margin-left: 20px;"></SearchInput>
             <div style="margin-top: 10px;">共{{waitcount}}条结果</div>
             <approvalList :waitlist="applyList"  v-if="applyList.length>0" @update="getWaitList"  ></approvalList>
-            <a-empty v-show="applyList.length<=0" description="暂无数据" style="margin: 24% auto;" />
+            <a-empty v-show="applyList.length<=0" description="暂无数据"  class="empty"/>
             </a-spin>
           </a-tab-pane>
           <a-tab-pane key="2" tab="已审批">
@@ -37,7 +37,7 @@
             <SearchInput  style="display: inline-block;margin-left: 20px;"></SearchInput>
             <div style="margin-top: 10px;">共{{count}}条结果</div>
             <approvalList :waitlist="applyList" v-if="applyList.length>0"></approvalList>
-            <a-empty v-show="applyList.length<=0" description="暂无数据" style="margin: 24% auto;" />
+            <a-empty v-show="applyList.length<=0" description="暂无数据"  class="empty" />
             </a-spin>
           </a-tab-pane>
           <a-tab-pane key="3" tab="我发起">
@@ -46,7 +46,7 @@
             <SearchInput  style="display: inline-block;margin-left: 20px;"></SearchInput>
             <div style="margin-top: 10px;">共{{count}}条结果</div>
             <approvalList :waitlist="applyList"  v-if="applyList.length>0"></approvalList>
-            <a-empty v-show="applyList.length<=0" description="暂无数据" style="margin: 24% auto;" />
+            <a-empty v-show="applyList.length<=0" description="暂无数据"  class="empty" />
             </a-spin>
           </a-tab-pane>
           <a-tab-pane key="4" tab="抄送我">
@@ -56,7 +56,7 @@
             <SearchInput  style="display: inline-block;margin-left: 20px;"></SearchInput>
             <div style="margin-top: 10px;">共{{count}}条结果</div>
             <approvalList :waitlist="applyList"  v-if="applyList.length>0"></approvalList>
-            <a-empty v-show="applyList.length<=0" description="暂无数据" style="margin: 24% auto;" />
+            <a-empty v-show="applyList.length<=0" description="暂无数据" class="empty"/>
             </a-spin>
           </a-tab-pane>
           <a-tab-pane key="5" tab="发起申请">
@@ -98,7 +98,7 @@ export default {
       count: 0,
       applyList: [],
       spinning: true,
-      choose_type: 1,
+      choose_type: 0,
       page: 1
     }
   },
@@ -186,9 +186,9 @@ export default {
   .backcolor{
     background: #fff;
     min-width: 700px;
-    position: absolute;
-    height: 100%;
-    width: calc(100% - 74px);
+    position: relative;
+    min-height: 100%;
+    /*width: calc(100% - 74px);*/
   }
   .apply_header_right{
     /*line-height: 80px;*/
@@ -225,4 +225,5 @@ export default {
     min-width: 700px;
     padding-left: 38px;
   }
+  .empty{margin: 20% auto;}
 </style>
