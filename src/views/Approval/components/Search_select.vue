@@ -8,13 +8,16 @@
       请假
     </a-select-option>
     <a-select-option :value="2">
-      加班
+    出差
     </a-select-option>
     <a-select-option :value="3">
-      外出
+      加班
     </a-select-option>
     <a-select-option :value="4">
-      出差
+      换班
+    </a-select-option>
+    <a-select-option :value="5">
+      补卡
     </a-select-option>
   </a-select>
 </section>

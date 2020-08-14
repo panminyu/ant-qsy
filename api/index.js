@@ -1,5 +1,6 @@
 import Axios from 'axios'
 import { getCid, getToken } from "../src/util/auth"
+import { message } from 'ant-design-vue'
 
 const $http = Axios.create({
   baseURL: '/api',
@@ -33,6 +34,6 @@ export default (opt) => new Promise((resolve) => {
     )
   }).catch(res => {
     console.log('运程请求失败')
-    // this.$message.error('运程请求失败')
+    message.error('运程请求失败')
   })
 })

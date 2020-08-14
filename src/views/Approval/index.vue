@@ -111,37 +111,48 @@ export default {
       if (waitlist.code === 0) {
         this.applyList = waitlist.data
         this.waitcount = waitlist.data.length
-        this.spinning = false
+      } else {
+        this.$message.error(waitlist.msg)
       }
+      this.spinning = false
     },
     async getPassList (type) { // 获取已审批列表
       const passlist = await applyPassList({ page: this.page, choose_type: type })
       if (passlist.code === 0) {
         this.applyList = passlist.data
         this.count = passlist.data.length
-        this.spinning = false
+      } else {
+        this.$message.error(passlist.msg)
       }
+      this.spinning = false
     },
     async getApplyList (type) { // 获取发起审批列表
       const list = await applyList({ page: this.page, choose_type: type })
       if (list.code === 0) {
         this.applyList = list.data
         this.count = list.data.length
-        this.spinning = false
+      } else {
+        this.$message.error(list.msg)
       }
+      this.spinning = false
     },
     async getCopyToMyList (type) { // 获取抄送列表
       const copyList = await copyToMyList({ page: this.page, choose_type: type })
       if (copyList.code === 0) {
         this.applyList = copyList.data
         this.count = copyList.data.length
-        this.spinning = false
-      } else {}
+      } else {
+        this.$message.error(copyList.msg)
+      }
+      this.spinning = false
     },
     async getapplyType (type) { // 发起申请列表
       const applyTypelist = await applyType({ page: this.page, choose_type: type })
-      console.log(applyTypelist)
       this.spinning = false
+      if (applyTypelist.code === 0) {
+      } else {
+        this.$message.error(applyTypelist.msg)
+      }
     },
     tabsapproval: function (val) {
       if (val !== 1) { this.waitcount = 0 }

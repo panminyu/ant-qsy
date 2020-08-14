@@ -9,7 +9,7 @@ export default new Vuex.Store({
     routers: [],
     Token: '',
     cid: null,
-    userInfo: JSON.parse(getUsers()),
+    userInfo: JSON.parse(getUsers()) || {},
     currInfo: JSON.parse(getCurrentUser()),
     todaysList: []
   },

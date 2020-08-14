@@ -186,8 +186,13 @@
                     :inline="true"></Avatar>
                   <div class="process_con">
                     <span class="size18">{{item.username}}</span><br/>
-                    <img :src="icornArr[item.review_status]" alt="" style="margin-left: -30px;">
-                    <span style="margin-left: 10px;" :class="{'tActive':item.review_status==3, 'jActive':item.review_status==2}">{{itemArr[item.review_status]}}</span>
+                    <img :src="icornArr[item.review_status-1]" alt="" style="margin-left: -30px;">
+                    <span style="margin-left: 10px;"
+                          :class="{'tActive':item.review_status==3,
+                           'jActive':item.review_status==2,
+                           'dActive':item.review_status==1||item.review_status==2}">
+                      {{itemArr[item.review_status-1]}}
+                    </span>
                     <span style="float: right;margin-right: 50px;">{{item.review_time}}</span>
                   </div>
                 </a-timeline-item>
@@ -205,12 +210,12 @@
                              style=" vertical-align: middle;"
                              :inline="true"></Avatar>
                       {{ss.username}}</span>
-                    <span style="float: right;margin-right: 50px;">7-10 20:00</span>
+                    <span style="float: right;margin-right: 50px;">{{ss.send_time}}</span>
                   </div>
                 </a-timeline-item>
               </a-timeline>
             </div>
-            <div class="footer_btn" v-if="acticecontent.is_cancel!=0 && acticecontent.is_apply !=0">
+            <div class="footer_btn" v-if="acticecontent.is_cancel!=1 ||acticecontent.is_apply !=1">
               <div style="float: left" v-if="acticecontent.is_cancel==1">
                 <a-button type="link" @click="Cancel(acticecontent.id)">
                  撤销
@@ -260,8 +265,8 @@ export default {
   name: 'approval_list',
   data () {
     return {
-      itemArr: ['待审核', '审核中', '拒绝', '通过'],
-      icornArr: [require('../../../assets/examine.png'), require('../../../assets/adopt.png'), require('../../../assets/refuse.png')],
+      itemArr: ['待审核', '审核中', '已同意', '已拒绝'],
+      icornArr: [require('../../../assets/examine.png'), require('../../../assets/examine.png'), require('../../../assets/adopt.png'), require('../../../assets/refuse.png')],
       icon: require('../../../assets/examine.png'),
       active: 0,
       acticecontent: {
@@ -285,8 +290,10 @@ export default {
       const activeC = await getapplyDetail({ apply_id: applyid })
       if (activeC.code === 0) {
         this.acticecontent = activeC.data
-        this.isShow = false
+      } else {
+        this.$message.error(activeC.msg)
       }
+      this.isShow = false
     },
     activeapply (row, index) {
       this.getcontent(row.id)
@@ -297,6 +304,8 @@ export default {
       const Acancel = await applyCancel({ apply_id: id })
       if (Acancel.code === 0) {
         this.$emit('update')
+      } else {
+        this.$message.error(Acancel.msg)
       }
     },
     // async Transfer (row) { // 转交
@@ -318,6 +327,8 @@ export default {
       const MoldData = await applyReview({ apply_id: data.id, type: data.type, review_status: type, msg: this.opinion })
       if (MoldData.code === 0) {
         this.$emit('update')
+      } else {
+        this.$message.error(MoldData.msg)
       }
       this.visible = false
     },
@@ -402,6 +413,7 @@ export default {
   }
   .jActive{color:#FF2A2A }
   .tActive {color:#04CB12}
+  .dActive{color:#F6A905;}
   .conten{
     margin-top: 100px;
     padding: 0 30px;
