@@ -20,7 +20,8 @@
             <span v-else-if="item.type === 3" style="font-size: 14px">加班 </span>
             <span v-else-if="item.type === 4" style="font-size: 14px">换班 </span>
             <span v-else-if="item.type === 5" style="font-size: 14px">补卡</span>
-            <span>{{item.start_time}}至{{item.end_time}}</span>
+            <span v-if="acticecontent.type != 5">{{item.start_time}}至{{item.end_time}}</span>
+            <span v-if="acticecontent.type == 5">{{item.check_time}}  {{item.bc}}</span>
             <p style="margin: 0;font-size: 14px">{{item.addtime}}</p>
           </div>
           <div class="title_right">
