@@ -27,7 +27,7 @@
            <SearchSelect style="display: inline-block" :Type="choose_type" @selectType="getWaitList"></SearchSelect>
             <SearchInput  style="display: inline-block;margin-left: 20px;"></SearchInput>
             <div style="margin-top: 10px;">共{{waitcount}}条结果</div>
-            <approvalList :waitlist="applyList"  v-if="applyList.length>0" @update="getWaitList"  ></approvalList>
+            <approvalList :waitlist="applyList"  v-if="type==1 && applyList.length>0" @update="getWaitList"  ></approvalList>
             <a-empty v-show="applyList.length<=0" description="暂无数据"  class="empty"/>
             </a-spin>
           </a-tab-pane>
@@ -36,7 +36,7 @@
             <SearchSelect style="display: inline-block" :Type="choose_type" @selectType="getPassList"></SearchSelect>
             <SearchInput  style="display: inline-block;margin-left: 20px;"></SearchInput>
             <div style="margin-top: 10px;">共{{count}}条结果</div>
-            <approvalList :waitlist="applyList" v-if="applyList.length>0"></approvalList>
+            <approvalList :waitlist="applyList" v-if="type ==2 && applyList.length>0"></approvalList>
             <a-empty v-show="applyList.length<=0" description="暂无数据"  class="empty" />
             </a-spin>
           </a-tab-pane>
@@ -45,7 +45,7 @@
             <SearchSelect style="display: inline-block" :Type="choose_type" @selectType="getApplyList"></SearchSelect>
             <SearchInput  style="display: inline-block;margin-left: 20px;"></SearchInput>
             <div style="margin-top: 10px;">共{{count}}条结果</div>
-            <approvalList :waitlist="applyList"  v-if="applyList.length>0"></approvalList>
+            <approvalList :waitlist="applyList"  v-if="type ==3 && applyList.length>0"></approvalList>
             <a-empty v-show="applyList.length<=0" description="暂无数据"  class="empty" />
             </a-spin>
           </a-tab-pane>
@@ -55,7 +55,7 @@
             <SearchSelect style="display: inline-block;margin-left: 20px;"></SearchSelect>
             <SearchInput  style="display: inline-block;margin-left: 20px;"></SearchInput>
             <div style="margin-top: 10px;">共{{count}}条结果</div>
-            <approvalList :waitlist="applyList"  v-if="applyList.length>0"></approvalList>
+            <approvalList :waitlist="applyList"  v-if="type == 4 && applyList.length>0"></approvalList>
             <a-empty v-show="applyList.length<=0" description="暂无数据" class="empty"/>
             </a-spin>
           </a-tab-pane>
@@ -99,6 +99,7 @@ export default {
       applyList: [],
       spinning: true,
       choose_type: 0,
+      type: 1, // tab切换是哪个就请求哪一个的接口避免请求多次
       page: 1
     }
   },
@@ -159,18 +160,23 @@ export default {
       this.spinning = true
       switch (val) {
         case '1':
+          this.type = 1
           this.getWaitList(this.choose_type)
           break
         case '2':
+          this.type = 2
           this.getPassList(this.choose_type)
           break
         case '3':
+          this.type = 3
           this.getApplyList(this.choose_type)
           break
         case '4':
+          this.type = 4
           this.getCopyToMyList(this.choose_type)
           break
         case '5':
+          this.type = 5
           this.getapplyType(this.choose_type)
           break
       }

@@ -20,8 +20,9 @@
             <span v-else-if="item.type === 3" style="font-size: 14px">加班 </span>
             <span v-else-if="item.type === 4" style="font-size: 14px">换班 </span>
             <span v-else-if="item.type === 5" style="font-size: 14px">补卡</span>
-            <span v-if="acticecontent.type != 5">{{item.start_time}}至{{item.end_time}}</span>
-            <span v-if="acticecontent.type == 5">{{item.check_time}}  {{item.bc}}</span>
+            <span v-show="item.type != 5">{{item.start_time}}至{{item.end_time}}</span>
+            <!--v-show="acticecontent.type != 5"-->
+            <span v-show="item.type == 5">{{item.check_time}}  {{item.bc}}</span>
             <p style="margin: 0;font-size: 14px">{{item.addtime}}</p>
           </div>
           <div class="title_right">
@@ -282,9 +283,9 @@ export default {
     }
   },
   created () {
-    setTimeout(() => {
+    // setTimeout(() => {
       this.getcontent(this.waitlist[0].id)
-    }, 100)
+    // }, 100)
   },
   methods: {
     async getcontent (applyid) { // 获取审批内容
