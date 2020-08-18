@@ -1,5 +1,5 @@
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production' ? '/' : '/', // 静态资源访问路径
+  publicPath: process.env.NODE_ENV === 'production' ? './' : '/', // 静态资源访问路径
   devServer: {
     proxy: {
       '/api': {

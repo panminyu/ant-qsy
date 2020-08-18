@@ -199,7 +199,7 @@
                 <span  class="size16">{{item.review_time}}</span>
                 </div>
               </a-timeline-item>
-              <a-timeline-item style="height: 20px;" v-if="detailsMsg.send_member_info&&detailsMsg.send_member_info.length>0">
+              <a-timeline-item style="height: 50px;" v-if="detailsMsg.send_member_info&&detailsMsg.send_member_info.length>0">
                 <IconFont type="iconshenhe_gaizhang" slot="dot" class="ICON_style" ></IconFont>
                 <div  class="process_con">
                   <div class="size18">抄送</div>
@@ -231,9 +231,10 @@
 </template>
 <script>
 import Avatar from 'vue-avatar'
+import { IconFont } from '../../Mixins/Icon'
 export default {
   name: 'detailsInfo',
-  components: { Avatar },
+  components: { Avatar, IconFont },
   props: ['detailsMsg', 'detailVisible', 'AIndex'],
   data () {
     return {
@@ -381,6 +382,7 @@ export default {
   .footer_liuc{
     padding-left: 21px;
     margin-left: 24px;
+    margin-bottom: 67px;
   }
   .footer_btn{
     overflow: hidden;
@@ -423,7 +425,7 @@ export default {
     color: #BFC1C4;
   }
   .size18{font-size: 18px;}
-  .ant-timeline-item-last{height: 50px!important;}
+  .ant-timeline-item-last{margin-bottom: 40px;}
   .state_img{
     position: absolute;
     top: 24px;
