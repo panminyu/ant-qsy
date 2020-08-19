@@ -24,7 +24,7 @@
         <a-tabs @change="tabsapproval" :animated="false">
           <a-tab-pane key="1" :tab="waitcount>0?'待审批（'+waitcount+'）':'待审批'">
             <a-spin tip="Loading..." :spinning="spinning">
-           <SearchSelect style="display: inline-block" :Type="choose_type" @selectType="getWaitList" @checkType="ceshi"></SearchSelect>
+           <SearchSelect style="display: inline-block" :Type="choose_type" @selectType="getWaitList" @chckeType="ceshi"></SearchSelect>
             <SearchInput  style="display: inline-block;margin-left: 20px;"></SearchInput>
             <div style="margin-top: 10px;">共{{waitcount}}条结果</div>
             <approvalList :waitlist="applyList"  v-if="type==1 && applyList.length>0" @update="getWaitList"  ></approvalList>
@@ -33,28 +33,28 @@
           </a-tab-pane>
           <a-tab-pane key="2" tab="已审批">
             <a-spin tip="Loading..." :spinning="spinning">
-            <SearchSelect style="display: inline-block" :Type="choose_type" @selectType="getPassList" @checkType="ceshi"></SearchSelect>
+            <SearchSelect style="display: inline-block" :Type="choose_type" @selectType="getPassList" @chckeType="ceshi"></SearchSelect>
             <SearchInput  style="display: inline-block;margin-left: 20px;"></SearchInput>
             <div style="margin-top: 10px;">共{{count}}条结果</div>
-            <approvalList :waitlist="applyList" v-if="type ==2 && applyList.length>0"></approvalList>
+            <approvalList :waitlist="applyList" v-if="type ==2 && applyList.length>0" @update="getPassList"  ></approvalList>
             <a-empty v-show="applyList.length<=0" description="暂无数据"  class="empty" />
             </a-spin>
           </a-tab-pane>
           <a-tab-pane key="3" tab="我发起">
             <a-spin tip="Loading..." :spinning="spinning">
-            <SearchSelect style="display: inline-block" :Type="choose_type" @selectType="getApplyList" @checkType="ceshi"></SearchSelect>
+            <SearchSelect style="display: inline-block" :Type="choose_type" @selectType="getApplyList" @chckeType="ceshi"></SearchSelect>
             <SearchInput  style="display: inline-block;margin-left: 20px;"></SearchInput>
             <div style="margin-top: 10px;">共{{count}}条结果</div>
-            <approvalList :waitlist="applyList"  v-if="type ==3 && applyList.length>0"></approvalList>
-            <a-empty v-show="applyList.length<=0" description="暂无数据"  class="empty" />
+            <approvalList :waitlist="applyList"  v-if="type ==3 && applyList.length>0" @update="getApplyList"  ></approvalList>
+            <a-empty v-if="applyList.length<=0" description="暂无数据"  class="empty" />
             </a-spin>
           </a-tab-pane>
           <a-tab-pane key="4" tab="抄送我">
             <a-spin tip="Loading..." :spinning="spinning">
-              <SearchSelect style="display: inline-block" :Type="choose_type" @selectType="getCopyToMyList" @checkType="ceshi"></SearchSelect>
+              <SearchSelect style="display: inline-block" :Type="choose_type" @selectType="getCopyToMyList" @chckeType="ceshi"></SearchSelect>
             <SearchInput  style="display: inline-block;margin-left: 20px;"></SearchInput>
             <div style="margin-top: 10px;">共{{count}}条结果</div>
-            <approvalList :waitlist="applyList"  v-if="type == 4 && applyList.length>0"></approvalList>
+            <approvalList :waitlist="applyList"  v-if="type == 4 && applyList.length>0" @update="getCopyToMyList"  ></approvalList>
             <a-empty v-show="applyList.length<=0" description="暂无数据" class="empty"/>
             </a-spin>
           </a-tab-pane>

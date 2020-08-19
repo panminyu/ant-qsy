@@ -66,7 +66,7 @@
                 <span>{{detailsMsg.holiday_type}}</span>
               </p>
             </div>
-            <div v-if="detailsMsg.type !=5">
+            <div v-if="detailsMsg.type !=5 && detailsMsg.type!=4">
               <div class="xqType">
                 <label>开始时间</label>
                 <p>{{detailsMsg.start_time}}</p>
@@ -160,7 +160,7 @@
         </div>
         <div id="type2">
           <div class="footer">
-          <div class="footer_liuc">
+          <div class="footer_liuc" :class="detailsMsg.is_apply==1?'zenheight':''">
             <a-timeline style="margin-top: 25px;">
               <a-timeline-item style="height: 100px;">
                 <Avatar
@@ -324,6 +324,7 @@ export default {
   right: 0;
   top: 55px;
   box-shadow: 5px 2px 6px 1px #d7d7d7;
+  z-index: 33;
 }
   #content{
     padding: 16px 23px;
@@ -356,6 +357,7 @@ export default {
   }
   .xqType{
     overflow: hidden;
+    margin-bottom: 10px;
   }
   .conten label{
     /*font-size: 14px;*/
@@ -368,7 +370,7 @@ export default {
   .conten p{
     float: left;
     margin-left: 16px;
-    margin-bottom: 10px;
+    margin-bottom:0;
     font-size: 18px
   }
   p,span,div{
@@ -382,8 +384,8 @@ export default {
   .footer_liuc{
     padding-left: 21px;
     margin-left: 24px;
-    margin-bottom: 67px;
   }
+  .zenheight{margin-bottom: 60px;}
   .footer_btn{
     overflow: hidden;
     position: absolute;
@@ -425,7 +427,7 @@ export default {
     color: #BFC1C4;
   }
   .size18{font-size: 18px;}
-  .ant-timeline-item-last{margin-bottom: 40px;}
+  .ant-timeline-item-last{height: 50px!important;}
   .state_img{
     position: absolute;
     top: 24px;

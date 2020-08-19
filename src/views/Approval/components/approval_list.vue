@@ -34,10 +34,10 @@
         </li>
       </ul>
     </a-layout-sider>
-    <a-layout>
+    <a-layout style="background: #fff">
       <a-spin :spinning="isShow">
        <a-layout-content class="siderconten letBorder">
-        <div class="conten_approval">
+        <div class="conten_approval" v-show="!isShow">
           <div class="header-title">
             <div class="title_left">
               <Avatar v-if="acticecontent.apply_name"
@@ -48,7 +48,7 @@
                       :inline="true"></Avatar>
               <div style="display: inline-grid;vertical-align: bottom; margin-left: 10px;">
                 <h3>{{acticecontent.apply_name}}</h3>
-                <p>欧菲智联</p>
+                <p>{{acticecontent.company_name}}</p>
               </div>
             </div>
             <div class="title_right">
@@ -233,7 +233,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div >
       </a-layout-content>
       </a-spin>
     </a-layout>
@@ -262,7 +262,7 @@ export default {
   props: {
     waitlist: {
       type: Array,
-      default: () => ([])
+      // default: () => ([])
     }
   },
   name: 'approval_list',
@@ -283,9 +283,18 @@ export default {
     }
   },
   created () {
-    // setTimeout(() => {
+    console.log(this.waitlist)
+    setTimeout(() => {
       this.getcontent(this.waitlist[0].id)
-    // }, 100)
+    }, 100)
+  },
+  watch: {
+    // waitlist (val) {
+    //   console.log(val)
+    //   if (val.length > 0) {
+    //     this.getcontent(this.waitlist[0].id)
+    //   }
+    // }
   },
   methods: {
     async getcontent (applyid) { // 获取审批内容
@@ -319,17 +328,17 @@ export default {
     // },
     isModal (data, type) {
       if (type === 1) {
-        this.Title = '确定同意' + data.username + '的' + data.holiday_type + '申请吗'
+        this.Title = '确定同意' + this.acticecontent.apply_name + '申请吗'
       } else {
-        this.Title = '确定拒绝' + data.username + '的' + data.holiday_type + '申请吗'
+        this.Title = '确定拒绝' + this.acticecontent.apply_name + '申请吗'
       }
       this.visible = true
       this.status = type
     },
     async  handleOk (data, type) {
-      console.log(data)
       const MoldData = await applyReview({ apply_id: data.apply_id, type: data.type, review_status: type, msg: this.opinion })
       if (MoldData.code === 0) {
+        this.$message.success(MoldData.msg)
         this.$emit('update')
       } else {
         this.$message.error(MoldData.msg)
