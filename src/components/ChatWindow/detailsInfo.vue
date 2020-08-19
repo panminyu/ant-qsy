@@ -427,7 +427,7 @@ export default {
     color: #BFC1C4;
   }
   .size18{font-size: 18px;}
-  .ant-timeline-item-last{height: 50px!important;}
+  .ant-timeline-item-last{height: auto!important;}
   .state_img{
     position: absolute;
     top: 24px;

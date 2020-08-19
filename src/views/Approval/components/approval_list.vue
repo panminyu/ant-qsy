@@ -228,7 +228,7 @@
                 </a-timeline-item>
               </a-timeline>
             </div>
-            <div class="footer_btn" v-if="acticecontent.is_cancel!=1 ||acticecontent.is_apply !=1">
+            <div class="footer_btn" v-if="acticecontent.is_cancel ==1 ||acticecontent.is_apply ==1">
               <div style="float: left" v-if="acticecontent.is_cancel==1">
                 <a-button type="link" @click="Cancel(acticecontent.apply_id)">
                  撤销
@@ -483,7 +483,11 @@ export default {
   .chaosong{
     background: #ececec;
     border-radius: 15px;
-   padding: 5px;
+    display: inline-block;
+    padding:4px 11px;
+    text-align: center;
+    margin: 3px 4px;
+    line-height: 12px;
   }
   .size18{
     font-size: 18px;
