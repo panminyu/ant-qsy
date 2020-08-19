@@ -31,6 +31,7 @@ export default {
     checkType (val) {
       console.log(val)
       this.$emit('selectType', val)
+      this.$emit('chckeType', val)
     }
   }
 }
