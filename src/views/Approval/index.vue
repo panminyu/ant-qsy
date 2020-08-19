@@ -27,7 +27,11 @@
            <SearchSelect style="display: inline-block" :Type="choose_type" @selectType="getWaitList" @chckeType="ceshi"></SearchSelect>
             <SearchInput  style="display: inline-block;margin-left: 20px;"></SearchInput>
             <div style="margin-top: 10px;">共{{waitcount}}条结果</div>
-            <approvalList :waitlist="applyList"  v-if="type==1 && applyList.length>0" @update="getWaitList"  ></approvalList>
+            <approvalList
+              :waitlist="applyList"
+              v-if="type==1 "
+              v-show="applyList.length>0"
+              @update="getWaitList"  ></approvalList>
             <a-empty v-show="applyList.length<=0" description="暂无数据"  class="empty"/>
             </a-spin>
           </a-tab-pane>
@@ -36,7 +40,11 @@
             <SearchSelect style="display: inline-block" :Type="choose_type" @selectType="getPassList" @chckeType="ceshi"></SearchSelect>
             <SearchInput  style="display: inline-block;margin-left: 20px;"></SearchInput>
             <div style="margin-top: 10px;">共{{count}}条结果</div>
-            <approvalList :waitlist="applyList" v-if="type ==2 && applyList.length>0" @update="getPassList"  ></approvalList>
+            <approvalList
+              :waitlist="applyList"
+              v-if="type ==2 "
+              v-show="applyList.length>0"
+              @update="getPassList"  ></approvalList>
             <a-empty v-show="applyList.length<=0" description="暂无数据"  class="empty" />
             </a-spin>
           </a-tab-pane>
@@ -45,7 +53,10 @@
             <SearchSelect style="display: inline-block" :Type="choose_type" @selectType="getApplyList" @chckeType="ceshi"></SearchSelect>
             <SearchInput  style="display: inline-block;margin-left: 20px;"></SearchInput>
             <div style="margin-top: 10px;">共{{count}}条结果</div>
-            <approvalList :waitlist="applyList"  v-if="type ==3 && applyList.length>0" @update="getApplyList"  ></approvalList>
+            <approvalList :waitlist="applyList"
+                          v-if="type ==3"
+                          v-show="applyList.length>0"
+                          @update="getApplyList"  ></approvalList>
             <a-empty v-if="applyList.length<=0" description="暂无数据"  class="empty" />
             </a-spin>
           </a-tab-pane>
@@ -54,7 +65,11 @@
               <SearchSelect style="display: inline-block" :Type="choose_type" @selectType="getCopyToMyList" @chckeType="ceshi"></SearchSelect>
             <SearchInput  style="display: inline-block;margin-left: 20px;"></SearchInput>
             <div style="margin-top: 10px;">共{{count}}条结果</div>
-            <approvalList :waitlist="applyList"  v-if="type == 4 && applyList.length>0" @update="getCopyToMyList"  ></approvalList>
+            <approvalList
+              :waitlist="applyList"
+              v-if="type == 4 "
+              v-show="applyList.length>0"
+              @update="getCopyToMyList"  ></approvalList>
             <a-empty v-show="applyList.length<=0" description="暂无数据" class="empty"/>
             </a-spin>
           </a-tab-pane>

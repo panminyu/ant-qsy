@@ -6,6 +6,9 @@ import router from './router/router'
 import store from './vuex/store.js'
 import './registerServiceWorker'
 import 'babel-polyfill'
+import Viewer from 'v-viewer'
+import 'viewerjs/dist/viewer.css'
+Vue.use(Viewer)
 Vue.config.productionTip = false
 Vue.use(Antd)
 new Vue({

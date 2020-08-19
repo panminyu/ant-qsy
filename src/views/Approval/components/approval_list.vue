@@ -153,8 +153,18 @@
               </div>
               <div>
                 <label>补卡图片</label>
-                <div>
-                  <img :src="item" alt="" width="80" height="80" style="margin-right: 10px" v-for="(item,index) in acticecontent.apply_image" :key="'22'+index">
+                <div class="maximg">
+                  <viewer :images="acticecontent.apply_image">
+                    <!--//photo 一定要一个数组，否则报错-->
+                    <img
+                      width="80" height="80"
+                      v-for="(src,index) in acticecontent.apply_image"
+                      :src="src"
+                      :key="index"
+                      :onerror="errorImg"
+                    >
+                  </viewer>
+                  <!--<img :src="item" alt="" width="80" height="80" style="margin-right: 10px" v-for="(item,index) in acticecontent.apply_image" :key="'22'+index">-->
                 </div>
               </div>
             </div>
@@ -261,7 +271,7 @@ export default {
   components: { Avatar, IconFont },
   props: {
     waitlist: {
-      type: Array,
+      type: Array
       // default: () => ([])
     }
   },
@@ -283,18 +293,18 @@ export default {
     }
   },
   created () {
-    console.log(this.waitlist)
-    setTimeout(() => {
-      this.getcontent(this.waitlist[0].id)
-    }, 100)
+    // console.log(this.waitlist)
+    // setTimeout(() => {
+    //   this.getcontent(this.waitlist[0].id)
+    // }, 100)
   },
   watch: {
-    // waitlist (val) {
-    //   console.log(val)
-    //   if (val.length > 0) {
-    //     this.getcontent(this.waitlist[0].id)
-    //   }
-    // }
+    waitlist (val) {
+      console.log(val)
+      if (val.length > 0) {
+        this.getcontent(this.waitlist[0].id)
+      }
+    }
   },
   methods: {
     async getcontent (applyid) { // 获取审批内容
@@ -347,6 +357,9 @@ export default {
     },
     handleCancel () {
       this.visible = false
+    },
+    errorImg (msg) {
+      console.log(msg)
     }
   }
 }
@@ -480,4 +493,9 @@ export default {
     position: relative;
     top: -10px;
   }
+  /*.maximg img:hover{*/
+    /*transform:scale(2.2);*/
+    /*cursor: pointer*/
+  /*}*/
+  .viewer-title{display: none}
 </style>

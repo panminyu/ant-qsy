@@ -104,4 +104,5 @@ export default {
   border-radius: 16px;
   background   : #ededed;
 }
+.viewer-title{display: none!important;}
 </style>
