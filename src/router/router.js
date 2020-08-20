@@ -43,9 +43,9 @@ const router = new Router({
 })
 router.beforeEach((to, from, next) => {
   let info = stote.state.userInfo // 获取存放的用户信息
-  console.log(info)
+  // console.log(info)
   let isinfo = Object.keys(info).length === 0 // 判断用户信息的长度是否为0
-  console.log(isinfo)
+  // console.log(isinfo)
   if (to.path !== '/login') {
     if (isinfo) { // 是否拿到登录信息
       next({ path: 'login' })

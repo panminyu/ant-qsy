@@ -21,6 +21,7 @@ $http.interceptors.request.use(res => {
   // res.data.cid = 1129
   // res.headers.common['TOKEN'] = localStorage.getItem('token') || ''
   res.headers.common['TOKEN'] = getToken() || ''
+  console.log(getToken())
   return res
 })
 export default (opt) => new Promise((resolve) => {

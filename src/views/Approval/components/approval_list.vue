@@ -170,7 +170,7 @@
             </div>
           </div>
           <div class="footer">
-            <div class="footer_liuc">
+            <div class="footer_liuc" :class="acticecontent.is_apply==1? 'isbtn': ''">
               <span style="z-index: 3"> 审批进程</span>
               <a-timeline style="margin-top: 25px;">
                 <a-timeline-item style="height: 100px;">
@@ -458,6 +458,9 @@ export default {
   }
   .footer_liuc{
     padding-left: 30px;
+  }
+  .isbtn {
+    margin-bottom: 55px;
   }
   .footer_btn{
     overflow: hidden;
