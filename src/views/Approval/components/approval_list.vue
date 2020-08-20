@@ -20,9 +20,10 @@
             <span v-else-if="item.type === 3" style="font-size: 14px">加班 </span>
             <span v-else-if="item.type === 4" style="font-size: 14px">换班 </span>
             <span v-else-if="item.type === 5" style="font-size: 14px">补卡</span>
-            <span v-show="item.type != 5">{{item.start_time}}至{{item.end_time}}</span>
+            <span v-show="item.type != 5 && item.type != 4">{{item.start_time}}至{{item.end_time}}</span>
             <!--v-show="acticecontent.type != 5"-->
             <span v-show="item.type == 5">{{item.check_time}}  {{item.bc}}</span>
+            <span v-show="item.type == 4">{{item.replace_username}}{{item.shift_date}} 还班{{item.repay_shift_date}}</span>
             <p style="margin: 0;font-size: 14px">{{item.addtime}}</p>
           </div>
           <div class="title_right">
@@ -94,7 +95,17 @@
               <div>
                 <label>图片</label>
                   <div>
-                    <img :src="item" alt="" width="80" height="80" style="margin-right: 10px" v-for="(item,index) in acticecontent.apply_image" :key="'qj'+index">
+                    <viewer :images="acticecontent.apply_image">
+                      <!--//photo 一定要一个数组，否则报错-->
+                      <img
+                        width="80" height="80"
+                        style="margin-right: 5px"
+                        v-for="(src,index) in acticecontent.apply_image"
+                        :src="src"
+                        :key="index"
+                        :onerror="errorImg"
+                      >
+                    </viewer>
                   </div>
               </div>
             </div>
@@ -158,6 +169,7 @@
                     <!--//photo 一定要一个数组，否则报错-->
                     <img
                       width="80" height="80"
+                      style="margin-right: 5px"
                       v-for="(src,index) in acticecontent.apply_image"
                       :src="src"
                       :key="index"

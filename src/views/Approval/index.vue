@@ -20,9 +20,9 @@
           </ul>
         </div>
       </div>
-      <div class="aooroval_conten">
-        <a-tabs @change="tabsapproval" :animated="false">
-          <a-tab-pane key="1" :tab="waitcount>0?'待审批（'+waitcount+'）':'待审批'">
+      <div class="aooroval_conten" >
+        <a-tabs @change="tabsapproval" :animated="false" :tabBarStyle="{fontSize:'18px'}">
+          <a-tab-pane key="1" :tab="waitcount>0?'待审批（'+waitcount+'）':'待审批'" >
             <a-spin tip="Loading..." :spinning="spinning">
            <SearchSelect style="display: inline-block" :Type="choose_type" @selectType="getWaitList" @chckeType="ceshi"></SearchSelect>
             <SearchInput  style="display: inline-block;margin-left: 20px;"></SearchInput>
@@ -250,4 +250,6 @@ export default {
     padding-left: 38px;
   }
   .empty{margin: 20% auto;}
+  .ant-tabs-tabr{font-size: 18px!important;}
+  .ant-tabs-nav{font-size: 18px}
 </style>

@@ -83,15 +83,24 @@
               </div>
               <div class="xqType" v-if="detailsMsg.apply_msg">
                 <label>请假事由</label>
-                <p style="width: 267px;">
+                <p>
                   {{detailsMsg.apply_msg}}
                 </p>
               </div>
               <div class="xqType" v-if="detailsMsg.apply_image.length>0">
                 <label>图片</label>
-                <p>
-                  <img :src="item" alt="" width="50" height="50" style="margin-right: 10px;" v-for="(item,index) in detailsMsg.apply_image" :key="index">
-                </p>
+                <div>
+                  <viewer :images="detailsMsg.apply_image">
+                 <!--//photo 一定要一个数组，否则报错-->
+                 <img
+                   width="80" height="80"
+                   style="margin-right: 5px"
+                   v-for="(src,index) in detailsMsg.apply_image"
+                   :src="src"
+                   :key="index"
+                 >
+               </viewer>
+                </div>
               </div>
             </div>
             <div v-if="detailsMsg.type ==2">
@@ -150,7 +159,16 @@
               <div class="xqType">
                 <label>补卡图片</label>
                 <div>
-                  <img :src="item" alt="" style="width: 50px;height: 50px;margin-right: 10px;" v-for="(item,index) in detailsMsg.apply_image" :key="index">
+                  <viewer :images="detailsMsg.apply_image">
+                    <!--//photo 一定要一个数组，否则报错-->
+                    <img
+                      width="80" height="80"
+                      style="margin-right: 5px"
+                      v-for="(src,index) in detailsMsg.apply_image"
+                      :src="src"
+                      :key="index"
+                    >
+                  </viewer>
                 </div>
               </div>
             </div>
@@ -410,7 +428,11 @@ export default {
   .chaosong{
     background: #ececec;
     border-radius: 15px;
-    padding: 5px;
+    display: inline-block;
+    padding: 4px 11px;
+    text-align: center;
+    margin: 3px 4px;
+    line-height: 12px;
   }
   .size18{
     font-size: 18px;
@@ -434,4 +456,5 @@ export default {
     right: 0;
     z-index: 0;
   }
+  .xqType p{width: 250px;}
 </style>

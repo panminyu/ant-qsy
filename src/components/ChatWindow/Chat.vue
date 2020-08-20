@@ -187,6 +187,9 @@ export default {
   width: 266px;
   vertical-align: top;
   line-height: 23px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .info2_label .xiaoqing{
     font-size: 18px;
