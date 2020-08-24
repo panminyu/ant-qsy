@@ -1,6 +1,6 @@
 <template>
 <section>
-  <a-select :value="Type" style="width: 120px" @change="checkType">
+  <a-select :value="Type" style="width: 120px;height: 40px" size="large" @change="checkType">
     <a-select-option :value="0">
       全部申请
     </a-select-option>

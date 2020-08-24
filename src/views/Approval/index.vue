@@ -21,12 +21,12 @@
         </div>
       </div>
       <div class="aooroval_conten" >
-        <a-tabs @change="tabsapproval" :animated="false" :tabBarStyle="{fontSize:'18px'}">
+        <a-tabs @change="tabsapproval" :animated="false" :tabBarStyle="{fontSize:'18px'}" type="line">
           <a-tab-pane key="1" :tab="waitcount>0?'待审批（'+waitcount+'）':'待审批'" >
             <a-spin tip="Loading..." :spinning="spinning">
-           <SearchSelect style="display: inline-block" :Type="choose_type" @selectType="getWaitList" @chckeType="ceshi"></SearchSelect>
-            <SearchInput  style="display: inline-block;margin-left: 20px;"></SearchInput>
-            <div style="margin-top: 10px;">共{{waitcount}}条结果</div>
+           <SearchSelect class="search" :Type="choose_type" @selectType="getWaitList" @chckeType="ceshi"></SearchSelect>
+            <SearchInput  class="search"></SearchInput>
+            <div style="margin-top: 10px;font-size: 18px;">共{{waitcount}}条结果</div>
             <approvalList
               :waitlist="applyList"
               v-if="type==1 "
@@ -39,7 +39,7 @@
             <a-spin tip="Loading..." :spinning="spinning">
             <SearchSelect style="display: inline-block" :Type="choose_type" @selectType="getPassList" @chckeType="ceshi"></SearchSelect>
             <SearchInput  style="display: inline-block;margin-left: 20px;"></SearchInput>
-            <div style="margin-top: 10px;">共{{count}}条结果</div>
+            <div style="margin-top: 10px;font-size: 18px">共{{count}}条结果</div>
             <approvalList
               :waitlist="applyList"
               v-if="type ==2 "
@@ -52,7 +52,7 @@
             <a-spin tip="Loading..." :spinning="spinning">
             <SearchSelect style="display: inline-block" :Type="choose_type" @selectType="getApplyList" @chckeType="ceshi"></SearchSelect>
             <SearchInput  style="display: inline-block;margin-left: 20px;"></SearchInput>
-            <div style="margin-top: 10px;">共{{count}}条结果</div>
+            <div style="margin-top: 10px;font-size: 18px">共{{count}}条结果</div>
             <approvalList :waitlist="applyList"
                           v-if="type ==3"
                           v-show="applyList.length>0"
@@ -64,7 +64,7 @@
             <a-spin tip="Loading..." :spinning="spinning">
               <SearchSelect style="display: inline-block" :Type="choose_type" @selectType="getCopyToMyList" @chckeType="ceshi"></SearchSelect>
             <SearchInput  style="display: inline-block;margin-left: 20px;"></SearchInput>
-            <div style="margin-top: 10px;">共{{count}}条结果</div>
+            <div style="margin-top: 10px;font-size: 18px">共{{count}}条结果</div>
             <approvalList
               :waitlist="applyList"
               v-if="type == 4 "
@@ -250,6 +250,19 @@ export default {
     padding-left: 38px;
   }
   .empty{margin: 20% auto;}
-  .ant-tabs-tabr{font-size: 18px!important;}
-  .ant-tabs-nav{font-size: 18px}
+  .aooroval_conten >>> .ant-tabs-line > .ant-tabs-bar .ant-tabs-tab{
+    font-size: 18px;
+    font-weight: 400;
+    color: #333;
+  }
+  .aooroval_conten >>> .ant-tabs-line > .ant-tabs-bar .ant-tabs-tab-active{
+    color: #2959FF;
+  }
+  .aooroval_conten >>> .ant-tabs-line > .ant-tabs-bar .ant-tabs-ink-bar{
+    background:#2959FF ;
+  }
+ .search{
+   display: inline-block;margin-right: 20px;
+   height: 40px;
+ }
 </style>

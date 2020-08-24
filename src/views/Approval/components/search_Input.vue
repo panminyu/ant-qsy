@@ -1,6 +1,6 @@
 <template>
   <section>
-    <a-input style="width: 300px;" v-model="val" placeholder="搜索">
+    <a-input style="width: 300px;" v-model="val" placeholder="搜索" size="large" >
       <a-icon slot="prefix" type="search" />
     </a-input>
   </section>

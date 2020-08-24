@@ -361,6 +361,7 @@ export default {
       const MoldData = await applyReview({ apply_id: data.apply_id, type: data.type, review_status: type, msg: this.opinion })
       if (MoldData.code === 0) {
         this.$message.success(MoldData.msg)
+        this.active = 0
         this.$emit('update')
       } else {
         this.$message.error(MoldData.msg)
