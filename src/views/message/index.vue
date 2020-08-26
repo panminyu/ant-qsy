@@ -131,6 +131,7 @@ export default {
           continue
         }
       }
+      console.log(this.toDadys)
       // for (let a = 0; a < newval.length; a++) {
       //   this.toDadys.unshift(newval[a])
       // }
@@ -139,6 +140,7 @@ export default {
           this.earlierList.splice(k, 1)
           continue
         }
+        console.log(this.earlierList)
       }
 
       this.toDadys.unshift(newval)
