@@ -114,7 +114,7 @@
               </div>
               <div class="xqType">
                 <label>出差时长</label>
-                <p>{{detailsMsg.travel_info[0].days}}</p>
+                <p>{{detailsMsg.travel_info[0].days}}{{detailsMsg.unit==1?'小时':'天'}}</p>
               </div>
               <div class="xqType">
                 <label>出差原因</label>

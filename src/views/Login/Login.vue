@@ -45,9 +45,9 @@
             <a-form-model-item style="margin-top: 24px;color: #AAA;">
               <a-checkbox v-model="checked" @change="isNext"></a-checkbox>
               我已阅读同意
-              <a href="#">企事云协议</a>
+              <a href="http://qsy.officelinking.com/qishiyunxieyi.html">企事云协议</a>
               和
-              <a href="#">隐私策略</a>
+              <a href="http://qsy.officelinking.com/yinsicelue.html">隐私策略</a>
             </a-form-model-item>
           </div>
           <div class="footer">

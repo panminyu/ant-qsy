@@ -34,15 +34,16 @@
       </div>
 
     </a-layout-sider>
-    <a-layout>
-      <a-layout-content class="right_content siderconten" width="1366">
-        <div  style="min-width: 500px">
+    <a-layout >
+      <a-layout-content class="right_content siderconten" id="right_content" width="1366" ref="rightChat">
+        <div  style="min-width: 500px;overflow: auto" >
           <div class="header" v-if="activeInfo">
             <img :src="active_title.app_icon" alt=" " width="48" height="48" style="border-radius: 50%">
             <h2 style="display:inline-block;margin-left: 16px;">{{active_title.app_name}}</h2>
           </div>
-          <div v-if="activeInfo">
+          <div v-if="activeInfo" >
             <ChatWindow
+              class="chats"
               :info="item"
               :active="active"
               v-for="(item,index) in activeInfo"
@@ -124,7 +125,6 @@ export default {
   },
   watch: { // 监听消息列表状态
     f1 (newval, oldval) {
-      console.log('最新消息', newval)
       for (let j = 0; j < this.toDadys.length; j++) {
         if (newval.app_id === this.toDadys[j].app_id) {
           this.toDadys.splice(j, 1)
@@ -136,12 +136,18 @@ export default {
       // }
       for (let k = 0; k < this.earlierList.length; k++) {
         if (newval.app_id === this.earlierList[k].app_id) {
-          this.toDadys.splice(k, 1)
+          this.earlierList.splice(k, 1)
           continue
         }
       }
 
       this.toDadys.unshift(newval)
+    },
+    activeInfo (newval, oldval) {
+      this.$nextTick(() => {
+        let dom2 = document.getElementById('right_content').scrollHeight
+        document.getElementById('right_content').scrollTop = dom2
+      })
     }
   },
   methods: {
@@ -219,6 +225,7 @@ export default {
   .right_content{
     background: #fff;
     text-align: left;
+    overflow: auto;
   }
   .icon{
     font-size: 40px;
@@ -246,4 +253,5 @@ export default {
     line-height: 80px;
     padding-left: 24px;
   }
+  .infocontent{overflow: auto}
 </style>
