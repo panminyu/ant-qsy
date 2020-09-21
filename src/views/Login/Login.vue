@@ -111,6 +111,15 @@ export default {
       }
     }
   },
+  created () {
+    let that = this
+    document.onkeydown = (e) => {
+      e = window.event || e
+      if (that.$route.path === '/login' && (e.code === 'Enter' || e.code === 'NumpadEnter')) { // 验证在登录界面和按得键是回车键enter
+        that.nextClick() // 登录函数
+      }
+    }
+  },
   methods: {
     next () { // 验证手机号码 获取验证码
       this.$refs.ruleForm.validate(valid => {
