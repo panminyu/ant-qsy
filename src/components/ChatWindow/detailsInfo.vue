@@ -53,7 +53,7 @@
           </a-anchor-link>
         </a-anchor>
       </div>
-      <div  id='content' style="">
+      <div  id='content'>
         <div class="dd" id="type1">
           <div class="conten">
             <div class="xqType">
@@ -287,6 +287,7 @@ export default {
     handleScroll () {
       let box = this.$refs.searchBar
       let scrollTop = box.offsetTop || box.scrollTop
+      console.log(scrollTop)
       if (scrollTop > 80) {
         this.isAnchor = true
       } else {
@@ -345,7 +346,9 @@ export default {
   z-index: 33;
 }
   #content{
-    padding: 16px 23px;
+    padding: 16px  23px;
+    /*width: 433px;*/
+    height: 100%;
   }
   .icon_color_s, .icon_color_t, .icon_color_j, .icon_color_c{
     padding: 2px 6px;

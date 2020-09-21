@@ -71,7 +71,7 @@
                 <span>{{acticecontent.holiday_type}}</span>
               </p>
             </div>
-            <div v-if="acticecontent.type !=5&&acticecontent.type!=4">
+            <div v-if="acticecontent.type !=5 && acticecontent.type!=4">
               <div>
                 <label>开始时间</label>
                 <p>{{acticecontent.start_time}}</p>
@@ -109,6 +109,7 @@
                   </div>
               </div>
             </div>
+            <!--出差-->
             <div v-if="acticecontent.type ==2">
               <div>
                 <label> 出发城市</label>
@@ -127,10 +128,12 @@
                 <p>{{acticecontent.travel_info[0].apply_msg}}</p>
               </div>
             </div>
+            <!--加班-->
             <div v-if="acticecontent.type ==3">
               <label>加班原因</label>
               <p>{{acticecontent.apply_msg}}</p>
             </div>
+            <!--换班-->
             <div v-if="acticecontent.type ==4">
               <div>
                 <label>替班人</label>
@@ -149,6 +152,7 @@
                 <p>{{acticecontent.apply_msg}}</p>
               </div>
             </div>
+            <!--补卡-->
             <div v-if="acticecontent.type ==5">
               <div>
                 <label>补卡时间</label>
@@ -178,6 +182,13 @@
                   </viewer>
                   <!--<img :src="item" alt="" width="80" height="80" style="margin-right: 10px" v-for="(item,index) in acticecontent.apply_image" :key="'22'+index">-->
                 </div>
+              </div>
+            </div>
+            <!--外出-->
+            <div v-if="acticecontent.type ==6">
+              <div>
+                <label>外出时长</label>
+                <p>{{acticecontent.days}}</p>
               </div>
             </div>
           </div>

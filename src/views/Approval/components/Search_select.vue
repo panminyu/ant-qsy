@@ -19,6 +19,9 @@
     <a-select-option :value="5">
       补卡
     </a-select-option>
+    <a-select-option :value="6">
+      外出
+    </a-select-option>
   </a-select>
 </section>
 </template>
