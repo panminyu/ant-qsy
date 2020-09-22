@@ -249,6 +249,7 @@ export default {
     display: none;
   }
   .message_input{width: 384px;height: 40px;}
+  .message_input >>> .ant-input{border-radius: 20px;}
   .header{
     height:80px;
     border-bottom: 1px solid #e6e6e6;

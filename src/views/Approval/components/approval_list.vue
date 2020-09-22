@@ -188,7 +188,11 @@
             <div v-if="acticecontent.type ==6">
               <div>
                 <label>外出时长</label>
-                <p>{{acticecontent.days}}</p>
+                <p>{{acticecontent.days}}{{acticecontent.unit==1 ?'小时':'天'}}</p>
+              </div>
+              <div>
+                <label>外出原因</label>
+                <p>{{acticecontent.apply_msg}}</p>
               </div>
             </div>
           </div>

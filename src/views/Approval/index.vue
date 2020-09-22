@@ -265,4 +265,5 @@ export default {
    display: inline-block;margin-right: 20px;
    height: 40px;
  }
+  /*.search >>> .ant-input{border-radius: 20px;}*/
 </style>

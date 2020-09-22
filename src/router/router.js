@@ -7,19 +7,19 @@ export const asyncRoutes = [
   {
     path: '/message',
     name: 'message',
-    meta: { title: '消息', icon: 'message' },
+    meta: { title: '消息', icon: 'iconxiaoxi1' },
     component: () => import('../views/message/index.vue')
   },
   {
     path: '/approval',
     name: 'approval',
-    meta: { title: '审批', icon: 'profile' },
+    meta: { title: '审批', icon: 'iconlianxiren-copy' },
     component: () => import('../views/Approval/index.vue')
   },
   {
     path: '/workbench',
     name: 'workbench',
-    meta: { title: '工作台', icon: 'appstore' },
+    meta: { title: '工作台', icon: 'icongongzuotai-copy' },
     component: () => import('../views/Work_Tai/index.vue')
   }
 ]

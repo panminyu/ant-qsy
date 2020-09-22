@@ -11,16 +11,16 @@
     <div class="apply_header_right">
       <ul class="header_right">
         <li>
-          <a-icon type="appstore"></a-icon>
+          <img src="../../assets/setyingyong.png" alt="" width="20px" height="20px">
           获取应用
         </li>
-        <li>
-          <a-icon type="cluster"></a-icon>
-          创建应用
-        </li>
+        <!--<li>-->
+          <!--<a-icon type="cluster"></a-icon>-->
+          <!--创建应用-->
+        <!--</li>-->
         <li>
           <a href="http://test.oa.officelinking.com/" target="_blank">
-            <a-icon type="setting"></a-icon>
+            <img src="../../assets/setICON.png" alt="" width="20px" height="20px">
             设置
           </a>
         </li>
@@ -100,10 +100,12 @@ export default {
   float: left;
   line-height: 40px;
 }
+.apply_header_left >>> .ant-input{border-radius: 15px;}
 .header_right>li{
   float: left;
   margin: auto 10px;
   padding: 4px;
+  color: #787878;
 }
 .header_right>li:hover{
   cursor: pointer;
@@ -111,6 +113,6 @@ export default {
   border-radius: 5px;
 }
 .header_right>li a{
-  color: #333;
+  color: #787878;
 }
 </style>

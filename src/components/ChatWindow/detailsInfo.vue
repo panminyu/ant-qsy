@@ -54,6 +54,7 @@
         </a-anchor>
       </div>
       <div  id='content'>
+        <IconFont type="icongongzuotai-copy" class="menu_icon" style="font-size: 28px;color: skyblue"></IconFont>
         <div class="dd" id="type1">
           <div class="conten">
             <div class="xqType">
@@ -348,7 +349,7 @@ export default {
   #content{
     padding: 16px  23px;
     /*width: 433px;*/
-    height: 100%;
+    height: 95%;
   }
   .icon_color_s, .icon_color_t, .icon_color_j, .icon_color_c{
     padding: 2px 6px;
