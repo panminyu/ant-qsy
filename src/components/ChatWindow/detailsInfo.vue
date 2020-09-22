@@ -54,7 +54,6 @@
         </a-anchor>
       </div>
       <div  id='content'>
-        <IconFont type="icongongzuotai-copy" class="menu_icon" style="font-size: 28px;color: skyblue"></IconFont>
         <div class="dd" id="type1">
           <div class="conten">
             <div class="xqType">

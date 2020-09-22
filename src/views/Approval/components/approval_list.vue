@@ -219,6 +219,7 @@
                 <a-timeline-item style="height: 100px;" v-for="(item, index) in acticecontent.review_member_info" :key="index">
                   <Avatar
                     slot="dot"
+                    v-if="item.username"
                     :username="item.username"
                     :src="item.photo"
                     color="#fff"
@@ -310,7 +311,7 @@ export default {
       icon: require('../../../assets/examine.png'),
       active: 0,
       acticecontent: {
-        apply_member_info: { username: '', photo: '' }
+        apply_member_info: { username: '', photo: '' },
       },
       isShow: true,
       visible: false,
