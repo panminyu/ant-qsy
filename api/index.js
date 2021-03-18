@@ -29,6 +29,8 @@ export default (opt) => new Promise((resolve) => {
     ...opt,
     method: opt.method || 'GET'
   }
+  console.log(opt)
+  console.log(options)
   $http(options).then(res => {
     resolve(
       res.data
